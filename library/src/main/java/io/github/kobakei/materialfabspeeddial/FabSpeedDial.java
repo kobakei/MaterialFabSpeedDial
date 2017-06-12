@@ -15,6 +15,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.view.menu.MenuBuilder;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,6 +90,23 @@ public class FabSpeedDial extends FrameLayout {
         });
 
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.FabSpeedDial, defStyleAttr, 0);
+
+        // Key listener to handle BACK key
+        setFocusable(true);
+        setFocusableInTouchMode(true);
+        requestFocus();
+        setOnKeyListener(new OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    if (isOpened) {
+                        closeMenu();
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
 
         // Read attrs
         Drawable drawable = ta.getDrawable(R.styleable.FabSpeedDial_fab_fabDrawable);
