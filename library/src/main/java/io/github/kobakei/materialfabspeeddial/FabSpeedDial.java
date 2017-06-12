@@ -1,6 +1,7 @@
 package io.github.kobakei.materialfabspeeddial;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
@@ -111,10 +112,17 @@ public class FabSpeedDial extends FrameLayout {
         // TODO Read attrs
         int menuId = ta.getResourceId(R.styleable.FabSpeedDial_fab_menu, 0);
 
+        ColorStateList fabColor = ta.getColorStateList(R.styleable.FabSpeedDial_fab_fabColor);
+        if (fabColor != null) {
+            fabMain.setBackgroundTintList(fabColor);
+        }
+
+
         ta.recycle();
     }
 
     public void openMenu() {
+        fabMain.setSelected(true);
         fabMain.animate().rotation(45.0f)
                 .setDuration(300L)
                 .start();
@@ -139,6 +147,7 @@ public class FabSpeedDial extends FrameLayout {
     }
 
     public void closeMenu() {
+        fabMain.setSelected(false);
         fabMain.animate().rotation(0.0f)
                 .setDuration(300L)
                 .start();
