@@ -1,5 +1,7 @@
 # MaterialFabSpeedDial
 
+[![](https://jitpack.io/v/kobakei/MaterialFabSpeedDial.svg)](https://jitpack.io/#kobakei/MaterialFabSpeedDial)
+
 **NOTICE: This project is still experimental. APIs may be changed without compatibility.**
 
 This project aims to provide FloatingActionButton's speed dial pattern in material design guideline.
