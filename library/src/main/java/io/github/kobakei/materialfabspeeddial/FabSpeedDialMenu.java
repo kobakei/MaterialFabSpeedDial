@@ -93,6 +93,11 @@ public class FabSpeedDialMenu {
         this.rippleColor = rippleColor;
     }
 
+    @Override
+    public int hashCode() {
+        return itemId;
+    }
+
     /**
      * Builder class
      */
@@ -115,6 +120,9 @@ public class FabSpeedDialMenu {
 
         public FabSpeedDialMenu build() {
             FabSpeedDialMenu menu = new FabSpeedDialMenu();
+            if (itemId == 0) {
+                throw new IllegalStateException("itemId must be set");
+            }
             menu.setItemId(itemId);
             menu.setTitle(title);
             if (titleColorId > 0) {

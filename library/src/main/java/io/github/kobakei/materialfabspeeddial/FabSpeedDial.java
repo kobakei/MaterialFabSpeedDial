@@ -1,6 +1,7 @@
 package io.github.kobakei.materialfabspeeddial;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -24,9 +25,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
+ * Layout class containing {@link FloatingActionButton} with speed dial animation.
  * Created by keisukekobayashi on 2017/06/12.
  */
 
@@ -37,7 +41,7 @@ public class FabSpeedDial extends FrameLayout {
     private FloatingActionButton fabMain;
     private LinearLayout menuContainer;
     private View touchGuard;
-    private List<View> itemViews = new ArrayList<>();
+    private Map<Integer, View> itemViews = new HashMap<>();
 
     private List<OnMenuClickListener> listeners = new ArrayList<>();
 
@@ -144,66 +148,81 @@ public class FabSpeedDial extends FrameLayout {
         refreshMenus();
     }
 
+    public void removeMenu(FabSpeedDialMenu menu) {
+        menus.remove(menu);
+        refreshMenus();
+    }
+
     private void refreshMenus() {
         menuContainer.removeAllViews();
-        LayoutInflater inflater = LayoutInflater.from(getContext());
         for (final FabSpeedDialMenu menu : menus) {
-            final View itemView = inflater.inflate(R.layout.fab_speed_dial_item, menuContainer, false);
-
-            // Mini FAB
-            FloatingActionButton miniFab = (FloatingActionButton) itemView.findViewById(R.id.fab_mini);
-            if (menu.getDrawableId() > 0) {
-                miniFab.setImageResource(menu.getDrawableId());
-            }
-            if (menu.getDrawableTintList() != null) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    miniFab.setImageTintList(menu.getDrawableTintList());
-                } else {
-                    miniFab.setColorFilter(menu.getDrawableTintList().getDefaultColor());
-                }
-            }
-            if (menu.getFabBackgroundColor() != null) {
-                miniFab.setBackgroundTintList(menu.getFabBackgroundColor());
-            }
-            if (menu.getRippleColor() != 0) {
-                miniFab.setRippleColor(menu.getRippleColor());
-            }
-            miniFab.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    for (OnMenuClickListener listener : listeners) {
-                        listener.onMenuClick(itemView, menu.getItemId());
-                    }
-                    closeMenu();
-                }
-            });
-
-            // TextView
-            TextView label = (TextView) itemView.findViewById(R.id.text);
-            label.setText(menu.getTitle());
-            if (menu.getTitleColor() != null) {
-                label.setTextColor(menu.getTitleColor());
-            }
-            if (menu.getTitleBackgroundColor() != null) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    label.setBackgroundTintList(menu.getTitleBackgroundColor());
-                } else {
-                    label.setBackgroundColor(menu.getTitleBackgroundColor().getDefaultColor());
-                }
-            }
-            label.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    for (OnMenuClickListener listener : listeners) {
-                        listener.onMenuClick(itemView, menu.getItemId());
-                    }
-                    closeMenu();
-                }
-            });
-
+            View itemView = getOrCreateItemView(menu);
             menuContainer.addView(itemView);
-            itemViews.add(itemView);
+            itemViews.put(menu.getItemId(), itemView);
         }
+    }
+
+    @NonNull
+    private View getOrCreateItemView(final FabSpeedDialMenu menu) {
+        if (itemViews.containsKey(menu.getItemId())) {
+            return itemViews.get(menu.getItemId());
+        }
+
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        final View itemView = inflater.inflate(R.layout.fab_speed_dial_item, menuContainer, false);
+
+        // Mini FAB
+        FloatingActionButton miniFab = (FloatingActionButton) itemView.findViewById(R.id.fab_mini);
+        if (menu.getDrawableId() > 0) {
+            miniFab.setImageResource(menu.getDrawableId());
+        }
+        if (menu.getDrawableTintList() != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                miniFab.setImageTintList(menu.getDrawableTintList());
+            } else {
+                miniFab.setColorFilter(menu.getDrawableTintList().getDefaultColor());
+            }
+        }
+        if (menu.getFabBackgroundColor() != null) {
+            miniFab.setBackgroundTintList(menu.getFabBackgroundColor());
+        }
+        if (menu.getRippleColor() != 0) {
+            miniFab.setRippleColor(menu.getRippleColor());
+        }
+        miniFab.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (OnMenuClickListener listener : listeners) {
+                    listener.onMenuClick(itemView, menu.getItemId());
+                }
+                closeMenu();
+            }
+        });
+
+        // TextView
+        TextView label = (TextView) itemView.findViewById(R.id.text);
+        label.setText(menu.getTitle());
+        if (menu.getTitleColor() != null) {
+            label.setTextColor(menu.getTitleColor());
+        }
+        if (menu.getTitleBackgroundColor() != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                label.setBackgroundTintList(menu.getTitleBackgroundColor());
+            } else {
+                label.setBackgroundColor(menu.getTitleBackgroundColor().getDefaultColor());
+            }
+        }
+        label.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (OnMenuClickListener listener : listeners) {
+                    listener.onMenuClick(itemView, menu.getItemId());
+                }
+                closeMenu();
+            }
+        });
+
+        return itemView;
     }
 
     public void openMenu() {
@@ -212,8 +231,8 @@ public class FabSpeedDial extends FrameLayout {
                 .setDuration(300L)
                 .start();
 
-        for (int i = itemViews.size() - 1; i >= 0; i--) {
-            View itemView = itemViews.get(i);
+        for (int i = menus.size() - 1; i >= 0; i--) {
+            View itemView = itemViews.get(menus.get(i).getItemId());
 
             itemView.setAlpha(0.0f);
             itemView.setTranslationY(24.0f);
@@ -222,7 +241,7 @@ public class FabSpeedDial extends FrameLayout {
                     .translationY(0.0f)
                     .alpha(1.0f)
                     .setDuration(100L)
-                    .setStartDelay((itemViews.size() - 1 - i) * 50L)
+                    .setStartDelay((menus.size() - 1 - i) * 50L)
                     .start();
         }
 
@@ -244,6 +263,10 @@ public class FabSpeedDial extends FrameLayout {
         isOpened = false;
     }
 
+    public boolean isOpened() {
+        return isOpened;
+    }
+
     public void show() {
         fabMain.show();
     }
@@ -262,6 +285,14 @@ public class FabSpeedDial extends FrameLayout {
 
     public void removeOnMenuClickListener(OnMenuClickListener listener) {
         listeners.remove(listener);
+    }
+
+    /**
+     * Get main {@link FloatingActionButton}
+     * @return
+     */
+    public FloatingActionButton getMainFab() {
+        return fabMain;
     }
 
     public interface OnMenuClickListener {
