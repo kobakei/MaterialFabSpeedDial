@@ -2,6 +2,7 @@ package io.github.kobakei.materialfabspeeddial;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
@@ -22,6 +23,7 @@ public class FabSpeedDialMenu {
     @DrawableRes private int drawableId;
     private ColorStateList drawableTintList;
     private ColorStateList fabBackgroundColor;
+    @ColorInt private int rippleColor;
 
     FabSpeedDialMenu() {
 
@@ -83,6 +85,14 @@ public class FabSpeedDialMenu {
         this.titleBackgroundColor = titleBackgroundColor;
     }
 
+    public int getRippleColor() {
+        return rippleColor;
+    }
+
+    public void setRippleColor(int rippleColor) {
+        this.rippleColor = rippleColor;
+    }
+
     /**
      * Builder class
      */
@@ -97,6 +107,7 @@ public class FabSpeedDialMenu {
         @DrawableRes private int drawableId;
         @ColorRes private int drawableTint;
         @ColorRes private int fabBackgroundColorId;
+        @ColorRes private int rippleColorId;
 
         public Builder(@NonNull Context context) {
             this.context = context;
@@ -118,6 +129,9 @@ public class FabSpeedDialMenu {
             }
             if (fabBackgroundColorId > 0) {
                 menu.setFabBackgroundColor(ContextCompat.getColorStateList(context, fabBackgroundColorId));
+            }
+            if (rippleColorId > 0) {
+                menu.setRippleColor(ContextCompat.getColor(context, rippleColorId));
             }
             return menu;
         }
@@ -159,6 +173,11 @@ public class FabSpeedDialMenu {
 
         public Builder setFabBackgroundColor(@ColorRes int colorId) {
             this.fabBackgroundColorId = colorId;
+            return this;
+        }
+
+        public Builder setRippleColor(@ColorRes int colorId) {
+            this.rippleColorId = colorId;
             return this;
         }
     }

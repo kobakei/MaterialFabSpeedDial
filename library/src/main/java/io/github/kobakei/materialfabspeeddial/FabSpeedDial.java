@@ -3,6 +3,8 @@ package io.github.kobakei.materialfabspeeddial;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.AttrRes;
 import android.support.annotation.DrawableRes;
@@ -86,12 +88,28 @@ public class FabSpeedDial extends FrameLayout {
 
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.FabSpeedDial, defStyleAttr, 0);
 
-        // TODO Read attrs
-        ColorStateList fabColor = ta.getColorStateList(R.styleable.FabSpeedDial_fab_fabColor);
-        if (fabColor != null) {
-            fabMain.setBackgroundTintList(fabColor);
+        // Read attrs
+        Drawable drawable = ta.getDrawable(R.styleable.FabSpeedDial_fab_fabDrawable);
+        if (drawable != null) {
+            fabMain.setImageDrawable(drawable);
         }
 
+        ColorStateList fabBackgroundColor = ta.getColorStateList(R.styleable.FabSpeedDial_fab_fabBackgroundColor);
+        if (fabBackgroundColor != null) {
+            fabMain.setBackgroundTintList(fabBackgroundColor);
+        }
+
+        ColorStateList fabDrawableTint = ta.getColorStateList(R.styleable.FabSpeedDial_fab_fabDrawableTint);
+        if (fabDrawableTint != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                fabMain.setImageTintList(fabDrawableTint);
+            } else {
+                fabMain.setColorFilter(fabDrawableTint.getDefaultColor());
+            }
+        }
+
+        int rippleColor = ta.getColor(R.styleable.FabSpeedDial_fab_rippleColor, Color.WHITE);
+        fabMain.setRippleColor(rippleColor);
 
         ta.recycle();
     }
@@ -121,6 +139,9 @@ public class FabSpeedDial extends FrameLayout {
             }
             if (menu.getFabBackgroundColor() != null) {
                 miniFab.setBackgroundTintList(menu.getFabBackgroundColor());
+            }
+            if (menu.getRippleColor() != 0) {
+                miniFab.setRippleColor(menu.getRippleColor());
             }
             miniFab.setOnClickListener(new OnClickListener() {
                 @Override

@@ -30,6 +30,8 @@
         android:layout_marginLeft="0dp"
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:fab_fabColor="@color/fab_main"/>
+        app:fab_fabBackgroundColor="@color/colorAccent"
+        app:fab_fabDrawableTint="#FFF"
+        app:fab_rippleColor="#FFF"/>
 
 </android.support.constraint.ConstraintLayout>

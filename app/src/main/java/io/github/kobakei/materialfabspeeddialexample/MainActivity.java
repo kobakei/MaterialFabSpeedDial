@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
                 .setDrawable(R.drawable.ic_action_alarm)
                 .setDrawableTint(R.color.fab_mini_text)
                 .setFabBackgroundColor(R.color.fab_mini)
+                .setRippleColor(R.color.colorAccent)
                 .build());
         fab.addMenu(new FabSpeedDialMenu.Builder(this)
                 .setItemId(2)
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
                 .setDrawable(R.drawable.ic_action_camera)
                 .setDrawableTint(R.color.fab_mini_text)
                 .setFabBackgroundColor(R.color.fab_mini)
+                .setRippleColor(R.color.colorAccent)
                 .build());
         fab.addMenu(new FabSpeedDialMenu.Builder(this)
                 .setItemId(3)
@@ -43,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 .setDrawable(R.drawable.ic_action_cut)
                 .setDrawableTint(R.color.fab_mini_text)
                 .setFabBackgroundColor(R.color.fab_mini)
+                .setRippleColor(R.color.colorAccent)
                 .build());
         fab.addOnMenuClickListener(new FabSpeedDial.OnMenuClickListener() {
             @Override
