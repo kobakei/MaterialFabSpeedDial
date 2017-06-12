@@ -42,6 +42,8 @@ public class FabSpeedDial extends FrameLayout {
 
     private boolean isOpened = false;
 
+    private boolean useTouchGuard = true;
+
     public FabSpeedDial(@NonNull Context context) {
         super(context);
         initLayout(context, null, 0);
@@ -110,6 +112,11 @@ public class FabSpeedDial extends FrameLayout {
 
         int rippleColor = ta.getColor(R.styleable.FabSpeedDial_fab_rippleColor, Color.WHITE);
         fabMain.setRippleColor(rippleColor);
+
+        useTouchGuard = ta.getBoolean(R.styleable.FabSpeedDial_fab_touchGuard, true);
+
+        int touchGuardColor = ta.getColor(R.styleable.FabSpeedDial_fab_touchGuardColor, Color.argb(128, 0, 0, 0));
+        touchGuard.setBackgroundColor(touchGuardColor);
 
         ta.recycle();
     }
@@ -202,7 +209,9 @@ public class FabSpeedDial extends FrameLayout {
         }
 
         menuContainer.setVisibility(View.VISIBLE);
-        touchGuard.setVisibility(View.VISIBLE);
+        if (useTouchGuard) {
+            touchGuard.setVisibility(View.VISIBLE);
+        }
         isOpened = true;
     }
 

@@ -5,5 +5,7 @@
         <attr name="fab_fabDrawable" format="reference"/>
         <attr name="fab_fabDrawableTint" format="color"/>
         <attr name="fab_rippleColor" format="color"/>
+        <attr name="fab_touchGuard" format="boolean"/>
+        <attr name="fab_touchGuardColor" format="color"/>
     </declare-styleable>
 </resources>

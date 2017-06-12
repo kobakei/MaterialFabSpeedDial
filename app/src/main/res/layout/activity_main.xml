@@ -32,6 +32,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:fab_fabBackgroundColor="@color/colorAccent"
         app:fab_fabDrawableTint="#FFF"
-        app:fab_rippleColor="#FFF"/>
+        app:fab_rippleColor="#FFF"
+        app:fab_touchGuard="true"
+        app:fab_touchGuardColor="#80000000"/>
 
 </android.support.constraint.ConstraintLayout>

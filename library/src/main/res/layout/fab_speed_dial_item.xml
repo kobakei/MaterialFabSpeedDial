@@ -16,7 +16,7 @@
         android:padding="8dp"
         android:text="Hello world"
         tools:text="Menu Title"
-        android:textSize="12sp"
+        android:textSize="13sp"
         android:textColor="@android:color/black"
         android:background="@drawable/label_bg"/>
 
