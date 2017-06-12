@@ -4,7 +4,7 @@
 
 **NOTICE: This project is still experimental. APIs may be changed without compatibility.**
 
-This project aims to provide FloatingActionButton's speed dial pattern in material design guideline.
+This project aims to provide [FloatingActionButton's speed dial pattern in material design guideline](https://material.io/guidelines/components/buttons-floating-action-button.html#buttons-floating-action-button-transitions).
 
 This project is inspired by [fab-speed-dial](https://github.com/yavski/fab-speed-dial) and overcomes some issues of it (ex. using private APIs of support library).
 
