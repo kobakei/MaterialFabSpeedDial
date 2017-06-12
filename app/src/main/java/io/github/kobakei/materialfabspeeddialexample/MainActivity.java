@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import io.github.kobakei.materialfabspeeddial.FabSpeedDial;
+import io.github.kobakei.materialfabspeeddial.FabSpeedDialMenu;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,6 +17,24 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         final FabSpeedDial fab = (FabSpeedDial) findViewById(R.id.fab);
+        fab.addMenu(new FabSpeedDialMenu.Builder(this)
+                .setItemId(1)
+                .setTitle("Alarm")
+                .setDrawable(R.drawable.ic_action_alarm)
+                .setFabBackgroundColor(android.R.color.white)
+                .build());
+        fab.addMenu(new FabSpeedDialMenu.Builder(this)
+                .setItemId(2)
+                .setTitle("Camera")
+                .setDrawable(R.drawable.ic_action_camera)
+                .setFabBackgroundColor(android.R.color.white)
+                .build());
+        fab.addMenu(new FabSpeedDialMenu.Builder(this)
+                .setItemId(3)
+                .setTitle("Cut")
+                .setDrawable(R.drawable.ic_action_cut)
+                .setFabBackgroundColor(android.R.color.white)
+                .build());
         fab.addOnMenuClickListener(new FabSpeedDial.OnMenuClickListener() {
             @Override
             public void onMenuClick(View view, int itemId) {

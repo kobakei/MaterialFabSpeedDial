@@ -4,9 +4,12 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.support.annotation.AttrRes;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.view.menu.MenuBuilder;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,6 +27,8 @@ import java.util.List;
  */
 
 public class FabSpeedDial extends FrameLayout {
+
+    private List<FabSpeedDialMenu> menus = new ArrayList<>();
 
     private FloatingActionButton fabMain;
     private LinearLayout menuContainer;
@@ -70,35 +75,6 @@ public class FabSpeedDial extends FrameLayout {
 
         menuContainer = (LinearLayout) findViewById(R.id.menu_container);
 
-        // TODO Add items from menu
-        for (int i = 0; i < 3; i++) {
-            final int itemId = 123;
-
-            final View itemView = inflater.inflate(R.layout.fab_speed_dial_item, menuContainer, false);
-            FloatingActionButton miniFab = (FloatingActionButton) itemView.findViewById(R.id.fab_mini);
-            miniFab.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    for (OnMenuClickListener listener : listeners) {
-                        listener.onMenuClick(itemView, itemId);
-                    }
-                    closeMenu();
-                }
-            });
-            TextView label = (TextView) itemView.findViewById(R.id.text);
-            label.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    for (OnMenuClickListener listener : listeners) {
-                        listener.onMenuClick(itemView, itemId);
-                    }
-                    closeMenu();
-                }
-            });
-            menuContainer.addView(itemView);
-            itemViews.add(itemView);
-        }
-
         touchGuard = findViewById(R.id.touch_guard);
         touchGuard.setOnClickListener(new OnClickListener() {
             @Override
@@ -110,8 +86,6 @@ public class FabSpeedDial extends FrameLayout {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.FabSpeedDial, defStyleAttr, 0);
 
         // TODO Read attrs
-        int menuId = ta.getResourceId(R.styleable.FabSpeedDial_fab_menu, 0);
-
         ColorStateList fabColor = ta.getColorStateList(R.styleable.FabSpeedDial_fab_fabColor);
         if (fabColor != null) {
             fabMain.setBackgroundTintList(fabColor);
@@ -119,6 +93,50 @@ public class FabSpeedDial extends FrameLayout {
 
 
         ta.recycle();
+    }
+
+    public void addMenu(FabSpeedDialMenu menu) {
+        menus.add(menu);
+
+        refreshMenus();
+    }
+
+    private void refreshMenus() {
+        menuContainer.removeAllViews();
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        for (final FabSpeedDialMenu menu : menus) {
+            final View itemView = inflater.inflate(R.layout.fab_speed_dial_item, menuContainer, false);
+
+            // Mini FAB
+            FloatingActionButton miniFab = (FloatingActionButton) itemView.findViewById(R.id.fab_mini);
+            miniFab.setImageResource(menu.getDrawableId());
+            miniFab.setBackgroundTintList(menu.getFabBackgroundColor());
+            miniFab.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    for (OnMenuClickListener listener : listeners) {
+                        listener.onMenuClick(itemView, menu.getItemId());
+                    }
+                    closeMenu();
+                }
+            });
+
+            // TextView
+            TextView label = (TextView) itemView.findViewById(R.id.text);
+            label.setText(menu.getTitle());
+            label.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    for (OnMenuClickListener listener : listeners) {
+                        listener.onMenuClick(itemView, menu.getItemId());
+                    }
+                    closeMenu();
+                }
+            });
+
+            menuContainer.addView(itemView);
+            itemViews.add(itemView);
+        }
     }
 
     public void openMenu() {

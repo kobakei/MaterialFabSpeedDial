@@ -30,7 +30,6 @@
         android:layout_marginLeft="0dp"
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:fab_menu="@menu/fab"
         app:fab_fabColor="@color/fab_main"/>
 
 </android.support.constraint.ConstraintLayout>
