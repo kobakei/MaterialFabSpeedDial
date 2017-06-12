@@ -1,19 +1,16 @@
 package io.github.kobakei.materialfabspeeddial;
 
+import android.animation.Animator;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.AttrRes;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.view.menu.MenuBuilder;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -25,9 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Layout class containing {@link FloatingActionButton} with speed dial animation.
@@ -41,13 +36,18 @@ public class FabSpeedDial extends FrameLayout {
     private FloatingActionButton fabMain;
     private LinearLayout menuContainer;
     private View touchGuard;
-    private Map<Integer, View> itemViews = new HashMap<>();
 
     private List<OnMenuClickListener> listeners = new ArrayList<>();
 
     private boolean isOpened = false;
 
     private boolean useTouchGuard = true;
+
+    private static final long MAIN_FAB_ROTATE_DURATION = 200L;
+    private static final long MINI_FAB_SHOW_DURATION = 100L;
+    private static final long MINI_FAB_SHOW_DELAY = 50L;
+    private static final float MINI_FAB_SHOW_TRANSLATION = 24.0f;
+    private static final long MINI_FAB_DISMISS_DURATION = 100L;
 
     public FabSpeedDial(@NonNull Context context) {
         super(context);
@@ -158,16 +158,11 @@ public class FabSpeedDial extends FrameLayout {
         for (final FabSpeedDialMenu menu : menus) {
             View itemView = getOrCreateItemView(menu);
             menuContainer.addView(itemView);
-            itemViews.put(menu.getItemId(), itemView);
         }
     }
 
     @NonNull
     private View getOrCreateItemView(final FabSpeedDialMenu menu) {
-        if (itemViews.containsKey(menu.getItemId())) {
-            return itemViews.get(menu.getItemId());
-        }
-
         LayoutInflater inflater = LayoutInflater.from(getContext());
         final View itemView = inflater.inflate(R.layout.fab_speed_dial_item, menuContainer, false);
 
@@ -228,20 +223,20 @@ public class FabSpeedDial extends FrameLayout {
     public void openMenu() {
         fabMain.setSelected(true);
         fabMain.animate().rotation(45.0f)
-                .setDuration(300L)
+                .setDuration(MAIN_FAB_ROTATE_DURATION)
                 .start();
 
-        for (int i = menus.size() - 1; i >= 0; i--) {
-            View itemView = itemViews.get(menus.get(i).getItemId());
+        for (int i = 0; i < menus.size(); i++) {
+            View itemView = menuContainer.getChildAt(i);
 
             itemView.setAlpha(0.0f);
-            itemView.setTranslationY(24.0f);
+            itemView.setTranslationY(MINI_FAB_SHOW_TRANSLATION);
 
             itemView.animate()
                     .translationY(0.0f)
                     .alpha(1.0f)
-                    .setDuration(100L)
-                    .setStartDelay((menus.size() - 1 - i) * 50L)
+                    .setDuration(MINI_FAB_SHOW_DURATION)
+                    .setStartDelay((menus.size() - 1 - i) * MINI_FAB_SHOW_DELAY)
                     .start();
         }
 
@@ -255,10 +250,39 @@ public class FabSpeedDial extends FrameLayout {
     public void closeMenu() {
         fabMain.setSelected(false);
         fabMain.animate().rotation(0.0f)
-                .setDuration(300L)
+                .setDuration(MAIN_FAB_ROTATE_DURATION)
                 .start();
 
-        menuContainer.setVisibility(View.GONE);
+        for (int i = 0; i < menus.size(); i++) {
+            final View itemView = menuContainer.getChildAt(i);
+            itemView.animate()
+                    .alpha(0.0f)
+                    .setDuration(MINI_FAB_DISMISS_DURATION)
+                    .setListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            menuContainer.setVisibility(View.GONE);
+                            itemView.animate().setListener(null).start();
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animator animation) {
+
+                        }
+                    })
+                    .start();
+        }
+
         touchGuard.setVisibility(View.GONE);
         isOpened = false;
     }
