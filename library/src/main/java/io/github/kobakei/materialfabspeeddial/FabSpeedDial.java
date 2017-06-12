@@ -3,6 +3,7 @@ package io.github.kobakei.materialfabspeeddial;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.support.annotation.AttrRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
@@ -97,7 +98,6 @@ public class FabSpeedDial extends FrameLayout {
 
     public void addMenu(FabSpeedDialMenu menu) {
         menus.add(menu);
-
         refreshMenus();
     }
 
@@ -109,8 +109,19 @@ public class FabSpeedDial extends FrameLayout {
 
             // Mini FAB
             FloatingActionButton miniFab = (FloatingActionButton) itemView.findViewById(R.id.fab_mini);
-            miniFab.setImageResource(menu.getDrawableId());
-            miniFab.setBackgroundTintList(menu.getFabBackgroundColor());
+            if (menu.getDrawableId() > 0) {
+                miniFab.setImageResource(menu.getDrawableId());
+            }
+            if (menu.getDrawableTintList() != null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    miniFab.setImageTintList(menu.getDrawableTintList());
+                } else {
+                    miniFab.setColorFilter(menu.getDrawableTintList().getDefaultColor());
+                }
+            }
+            if (menu.getFabBackgroundColor() != null) {
+                miniFab.setBackgroundTintList(menu.getFabBackgroundColor());
+            }
             miniFab.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -124,6 +135,16 @@ public class FabSpeedDial extends FrameLayout {
             // TextView
             TextView label = (TextView) itemView.findViewById(R.id.text);
             label.setText(menu.getTitle());
+            if (menu.getTitleColor() != null) {
+                label.setTextColor(menu.getTitleColor());
+            }
+            if (menu.getTitleBackgroundColor() != null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    label.setBackgroundTintList(menu.getTitleBackgroundColor());
+                } else {
+                    label.setBackgroundColor(menu.getTitleBackgroundColor().getDefaultColor());
+                }
+            }
             label.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {

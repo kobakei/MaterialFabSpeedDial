@@ -20,20 +20,29 @@ public class MainActivity extends AppCompatActivity {
         fab.addMenu(new FabSpeedDialMenu.Builder(this)
                 .setItemId(1)
                 .setTitle("Alarm")
+                .setTitleColor(R.color.fab_mini_text)
+                .setTitleBackgroundColor(R.color.fab_mini)
                 .setDrawable(R.drawable.ic_action_alarm)
-                .setFabBackgroundColor(android.R.color.white)
+                .setDrawableTint(R.color.fab_mini_text)
+                .setFabBackgroundColor(R.color.fab_mini)
                 .build());
         fab.addMenu(new FabSpeedDialMenu.Builder(this)
                 .setItemId(2)
                 .setTitle("Camera")
+                .setTitleColor(R.color.fab_mini_text)
+                .setTitleBackgroundColor(R.color.fab_mini)
                 .setDrawable(R.drawable.ic_action_camera)
-                .setFabBackgroundColor(android.R.color.white)
+                .setDrawableTint(R.color.fab_mini_text)
+                .setFabBackgroundColor(R.color.fab_mini)
                 .build());
         fab.addMenu(new FabSpeedDialMenu.Builder(this)
                 .setItemId(3)
                 .setTitle("Cut")
+                .setTitleColor(R.color.fab_mini_text)
+                .setTitleBackgroundColor(R.color.fab_mini)
                 .setDrawable(R.drawable.ic_action_cut)
-                .setFabBackgroundColor(android.R.color.white)
+                .setDrawableTint(R.color.fab_mini_text)
+                .setFabBackgroundColor(R.color.fab_mini)
                 .build());
         fab.addOnMenuClickListener(new FabSpeedDial.OnMenuClickListener() {
             @Override
