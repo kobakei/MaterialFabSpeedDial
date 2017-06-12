@@ -29,6 +29,8 @@ public class FabSpeedDial extends FrameLayout {
     private View touchGuard;
     private List<View> itemViews = new ArrayList<>();
 
+    private List<OnMenuClickListener> listeners = new ArrayList<>();
+
     private boolean isOpened = false;
 
     public FabSpeedDial(@NonNull Context context) {
@@ -66,20 +68,30 @@ public class FabSpeedDial extends FrameLayout {
         });
 
         menuContainer = (LinearLayout) findViewById(R.id.menu_container);
+
+        // TODO Add items from menu
         for (int i = 0; i < 3; i++) {
-            View itemView = inflater.inflate(R.layout.fab_speed_dial_item, menuContainer, false);
+            final int itemId = 123;
+
+            final View itemView = inflater.inflate(R.layout.fab_speed_dial_item, menuContainer, false);
             FloatingActionButton miniFab = (FloatingActionButton) itemView.findViewById(R.id.fab_mini);
             miniFab.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    for (OnMenuClickListener listener : listeners) {
+                        listener.onMenuClick(itemView, itemId);
+                    }
+                    closeMenu();
                 }
             });
             TextView label = (TextView) itemView.findViewById(R.id.text);
             label.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    for (OnMenuClickListener listener : listeners) {
+                        listener.onMenuClick(itemView, itemId);
+                    }
+                    closeMenu();
                 }
             });
             menuContainer.addView(itemView);
@@ -96,7 +108,7 @@ public class FabSpeedDial extends FrameLayout {
 
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.FabSpeedDial, defStyleAttr, 0);
 
-        // TODO
+        // TODO Read attrs
         int menuId = ta.getResourceId(R.styleable.FabSpeedDial_fab_menu, 0);
 
         ta.recycle();
@@ -146,5 +158,17 @@ public class FabSpeedDial extends FrameLayout {
 
     public boolean isShown() {
         return fabMain.isShown();
+    }
+
+    public void addOnMenuClickListener(OnMenuClickListener listener) {
+        listeners.add(listener);
+    }
+
+    public void removeOnMenuClickListener(OnMenuClickListener listener) {
+        listeners.remove(listener);
+    }
+
+    public interface OnMenuClickListener {
+        void onMenuClick(View view, int itemId);
     }
 }
