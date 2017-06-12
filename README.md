@@ -29,6 +29,8 @@ dependencies {
 }
 ```
 
+`LATEST_VERSION` is [![](https://jitpack.io/v/kobakei/MaterialFabSpeedDial.svg)](https://jitpack.io/#kobakei/MaterialFabSpeedDial)
+
 ## Getting Started
 
 ### Layout
