@@ -326,6 +326,7 @@ public class FabSpeedDial extends FrameLayout {
     public void hide() {
         if (isOpened) {
             closeMenu();
+            fabMain.setRotation(0.0f);
         }
         fabMain.hide();
     }
