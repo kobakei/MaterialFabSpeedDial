@@ -19,7 +19,7 @@ public class FabSpeedDialMenu {
     private int itemId;
     private String title;
     private ColorStateList titleColor;
-    private ColorStateList titleBackgroundColor;
+    @DrawableRes private int titleBackgroundDrawableId;
     @DrawableRes private int drawableId;
     private ColorStateList drawableTintList;
     private ColorStateList fabBackgroundColor;
@@ -77,14 +77,6 @@ public class FabSpeedDialMenu {
         this.titleColor = titleColor;
     }
 
-    public ColorStateList getTitleBackgroundColor() {
-        return titleBackgroundColor;
-    }
-
-    public void setTitleBackgroundColor(ColorStateList titleBackgroundColor) {
-        this.titleBackgroundColor = titleBackgroundColor;
-    }
-
     public int getRippleColor() {
         return rippleColor;
     }
@@ -98,6 +90,14 @@ public class FabSpeedDialMenu {
         return itemId;
     }
 
+    public int getTitleBackgroundDrawableId() {
+        return titleBackgroundDrawableId;
+    }
+
+    public void setTitleBackgroundDrawableId(int titleBackgroundDrawableId) {
+        this.titleBackgroundDrawableId = titleBackgroundDrawableId;
+    }
+
     /**
      * Builder class
      */
@@ -109,6 +109,7 @@ public class FabSpeedDialMenu {
         private String title;
         @ColorRes private int titleColorId;
         @ColorRes private int titleBackgroundColorId;
+        @DrawableRes private int titleBackgroundDrawableId;
         @DrawableRes private int drawableId;
         @ColorRes private int drawableTint;
         @ColorRes private int fabBackgroundColorId;
@@ -128,8 +129,8 @@ public class FabSpeedDialMenu {
             if (titleColorId > 0) {
                 menu.setTitleColor(ContextCompat.getColorStateList(context, titleColorId));
             }
-            if (titleBackgroundColorId > 0) {
-                menu.setTitleBackgroundColor(ContextCompat.getColorStateList(context, titleBackgroundColorId));
+            if (titleBackgroundDrawableId > 0) {
+                menu.setTitleBackgroundDrawableId(titleBackgroundDrawableId);
             }
             menu.setDrawableId(drawableId);
             if (drawableTint > 0) {
@@ -164,8 +165,8 @@ public class FabSpeedDialMenu {
             return this;
         }
 
-        public Builder setTitleBackgroundColor(@ColorRes int colorId) {
-            this.titleBackgroundColorId = colorId;
+        public Builder setTitleBackgroundDrawable(@DrawableRes int drawableId) {
+            this.titleBackgroundDrawableId = drawableId;
             return this;
         }
 

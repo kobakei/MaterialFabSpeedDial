@@ -208,12 +208,10 @@ public class FabSpeedDial extends FrameLayout {
         if (menu.getTitleColor() != null) {
             label.setTextColor(menu.getTitleColor());
         }
-        if (menu.getTitleBackgroundColor() != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                label.setBackgroundTintList(menu.getTitleBackgroundColor());
-            } else {
-                label.setBackgroundColor(menu.getTitleBackgroundColor().getDefaultColor());
-            }
+        if (menu.getTitleBackgroundDrawableId() > 0) {
+            label.setBackgroundResource(menu.getTitleBackgroundDrawableId());
+        } else {
+            label.setBackgroundColor(Color.WHITE);
         }
         label.setOnClickListener(new OnClickListener() {
             @Override
@@ -326,6 +324,9 @@ public class FabSpeedDial extends FrameLayout {
      * Hide main {@link FloatingActionButton}
      */
     public void hide() {
+        if (isOpened) {
+            closeMenu();
+        }
         fabMain.hide();
     }
 
