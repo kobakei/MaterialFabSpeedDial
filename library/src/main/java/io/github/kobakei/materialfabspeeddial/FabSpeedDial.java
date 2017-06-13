@@ -143,11 +143,19 @@ public class FabSpeedDial extends FrameLayout {
         ta.recycle();
     }
 
+    /**
+     * Add menu item
+     * @param menu
+     */
     public void addMenu(FabSpeedDialMenu menu) {
         menus.add(menu);
         refreshMenus();
     }
 
+    /**
+     * Remove menu item
+     * @param menu
+     */
     public void removeMenu(FabSpeedDialMenu menu) {
         menus.remove(menu);
         refreshMenus();
@@ -156,13 +164,13 @@ public class FabSpeedDial extends FrameLayout {
     private void refreshMenus() {
         menuContainer.removeAllViews();
         for (final FabSpeedDialMenu menu : menus) {
-            View itemView = getOrCreateItemView(menu);
+            View itemView = createItemView(menu);
             menuContainer.addView(itemView);
         }
     }
 
     @NonNull
-    private View getOrCreateItemView(final FabSpeedDialMenu menu) {
+    private View createItemView(final FabSpeedDialMenu menu) {
         LayoutInflater inflater = LayoutInflater.from(getContext());
         final View itemView = inflater.inflate(R.layout.fab_speed_dial_item, menuContainer, false);
 
@@ -220,7 +228,13 @@ public class FabSpeedDial extends FrameLayout {
         return itemView;
     }
 
+    /**
+     * Open menu
+     */
     public void openMenu() {
+        if (isOpened) {
+            return;
+        }
         fabMain.setSelected(true);
         fabMain.animate().rotation(45.0f)
                 .setDuration(MAIN_FAB_ROTATE_DURATION)
@@ -247,7 +261,13 @@ public class FabSpeedDial extends FrameLayout {
         isOpened = true;
     }
 
+    /**
+     * Close menu
+     */
     public void closeMenu() {
+        if (!isOpened) {
+            return;
+        }
         fabMain.setSelected(false);
         fabMain.animate().rotation(0.0f)
                 .setDuration(MAIN_FAB_ROTATE_DURATION)
@@ -287,26 +307,48 @@ public class FabSpeedDial extends FrameLayout {
         isOpened = false;
     }
 
-    public boolean isOpened() {
+    /**
+     * Check whether menu is opened or closes
+     * @return true if opened, false otherwise
+     */
+    public boolean isOpeningMenu() {
         return isOpened;
     }
 
+    /**
+     * Show main {@link FloatingActionButton}
+     */
     public void show() {
         fabMain.show();
     }
 
+    /**
+     * Hide main {@link FloatingActionButton}
+     */
     public void hide() {
         fabMain.hide();
     }
 
+    /**
+     * Check whether main {@link FloatingActionButton} is shown or not
+     * @return true if main FAB is shown, false otherwise
+     */
     public boolean isShown() {
         return fabMain.isShown();
     }
 
+    /**
+     * Add event listener
+     * @param listener
+     */
     public void addOnMenuClickListener(OnMenuClickListener listener) {
         listeners.add(listener);
     }
 
+    /**
+     * Remove event listener
+     * @param listener
+     */
     public void removeOnMenuClickListener(OnMenuClickListener listener) {
         listeners.remove(listener);
     }
