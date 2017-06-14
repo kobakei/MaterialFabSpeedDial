@@ -39,16 +39,6 @@ public class FabSpeedDialMenuItem implements MenuItem {
     private char numericChar;
 
     /**
-     * Constructor
-     * @param context
-     * @param itemId
-     * @param order
-     */
-    public FabSpeedDialMenuItem(Context context, int itemId, int order) {
-        this(context, itemId, 0, order);
-    }
-
-    /**
      * Constructor for inflater
      * @param context
      * @param itemId
