@@ -9,15 +9,21 @@
         <item>@color/fab_mini</item>
         <item>@color/fab_mini</item>
         <item>@color/fab_mini</item>
+        <item>@color/fab_mini</item>
+        <item>@color/fab_mini</item>
     </array>
 
     <array name="white_array">
         <item>@android:color/white</item>
         <item>@android:color/white</item>
         <item>@android:color/white</item>
+        <item>@android:color/white</item>
+        <item>@android:color/white</item>
     </array>
 
     <array name="black_array">
+        <item>@android:color/black</item>
+        <item>@android:color/black</item>
         <item>@android:color/black</item>
         <item>@android:color/black</item>
         <item>@android:color/black</item>

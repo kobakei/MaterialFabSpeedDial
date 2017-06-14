@@ -258,6 +258,7 @@ public class FabSpeedDial extends FrameLayout {
         if (menuItem.getIcon() != null) {
             miniFab.setImageDrawable(menuItem.getIcon());
         }
+        miniFab.setEnabled(menuItem.isEnabled());
 
         if (miniFabBackgroundColor != null) {
             miniFab.setBackgroundTintList(miniFabBackgroundColor);
@@ -291,6 +292,7 @@ public class FabSpeedDial extends FrameLayout {
         // TextView
         final TextView label = (TextView) itemView.findViewById(R.id.text);
         label.setText(menuItem.getTitle());
+        label.setEnabled(menuItem.isEnabled());
 
         if (miniFabTextColor != null) {
             label.setTextColor(miniFabTextColor);
