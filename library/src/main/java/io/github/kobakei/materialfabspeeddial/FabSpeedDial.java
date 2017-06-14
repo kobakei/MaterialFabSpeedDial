@@ -467,7 +467,7 @@ public class FabSpeedDial extends FrameLayout {
      * Add event listener
      * @param listener
      */
-    public void addOnMenuClickListener(OnMenuItemClickListener listener) {
+    public void addOnMenuItemClickListener(OnMenuItemClickListener listener) {
         listeners.add(listener);
     }
 
@@ -475,7 +475,7 @@ public class FabSpeedDial extends FrameLayout {
      * Remove event listener
      * @param listener
      */
-    public void removeOnMenuClickListener(OnMenuItemClickListener listener) {
+    public void removeOnMenuItemClickListener(OnMenuItemClickListener listener) {
         listeners.remove(listener);
     }
 

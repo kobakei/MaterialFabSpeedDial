@@ -25,7 +25,7 @@ public class Simple2Activity extends AppCompatActivity {
         menu.add("Three").setIcon(R.drawable.ic_action_paste);
         fab.setMenu(menu);
 
-        fab.addOnMenuClickListener(new FabSpeedDial.OnMenuItemClickListener() {
+        fab.addOnMenuItemClickListener(new FabSpeedDial.OnMenuItemClickListener() {
             @Override
             public void onMenuItemClick(FloatingActionButton fab, TextView label, int itemId) {
                 Toast.makeText(Simple2Activity.this, "Click: " + itemId, Toast.LENGTH_SHORT).show();
