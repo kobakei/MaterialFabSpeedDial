@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.v7.util.SortedList;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,7 +25,42 @@ public class FabSpeedDialMenu implements Menu {
     @NonNull
     private final Context context;
 
-    private List<MenuItem> menuItems = new ArrayList<>();
+    private SortedList<MenuItem> menuItems = new SortedList<>(MenuItem.class, new SortedList.Callback<MenuItem>() {
+        @Override
+        public int compare(MenuItem o1, MenuItem o2) {
+            return o1.getOrder() - o2.getOrder();
+        }
+
+        @Override
+        public void onChanged(int position, int count) {
+
+        }
+
+        @Override
+        public boolean areContentsTheSame(MenuItem oldItem, MenuItem newItem) {
+            return false;
+        }
+
+        @Override
+        public boolean areItemsTheSame(MenuItem item1, MenuItem item2) {
+            return false;
+        }
+
+        @Override
+        public void onInserted(int position, int count) {
+
+        }
+
+        @Override
+        public void onRemoved(int position, int count) {
+
+        }
+
+        @Override
+        public void onMoved(int fromPosition, int toPosition) {
+
+        }
+    });
 
     public FabSpeedDialMenu(@NonNull Context context) {
         this.context = context;
