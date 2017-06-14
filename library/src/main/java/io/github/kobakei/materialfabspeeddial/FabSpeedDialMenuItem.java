@@ -1,13 +1,10 @@
-package io.github.kobakei.materialfabspeeddial.internal;
+package io.github.kobakei.materialfabspeeddial;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
-import android.support.annotation.RestrictTo;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.view.ActionProvider;
@@ -17,9 +14,12 @@ import android.view.SubMenu;
 import android.view.View;
 
 /**
+ * Menu item of FAB speed dial
+ * This class implements {@link MenuItem} interface but some methods are marked as deprecated and
+ * not implemented.
+ *
  * Created by keisuke on 2017/06/13.
  */
-@RestrictTo(RestrictTo.Scope.LIBRARY)
 public class FabSpeedDialMenuItem implements MenuItem {
 
     private final Context context;
@@ -38,15 +38,23 @@ public class FabSpeedDialMenuItem implements MenuItem {
     private char alphaChar;
     private char numericChar;
 
-    // FabSpeedDial fields
-    private ColorStateList titleColor;
-    @DrawableRes
-    private int titleBackgroundDrawableId;
-    private ColorStateList drawableTintList;
-    private ColorStateList fabBackgroundColor;
-    @ColorInt
-    private int rippleColor;
+    /**
+     * Constructor
+     * @param context
+     * @param itemId
+     * @param order
+     */
+    public FabSpeedDialMenuItem(Context context, int itemId, int order) {
+        this(context, itemId, 0, order);
+    }
 
+    /**
+     * Constructor for inflater
+     * @param context
+     * @param itemId
+     * @param groupId
+     * @param order
+     */
     FabSpeedDialMenuItem(Context context, int itemId, int groupId, int order) {
         this.context = context;
         this.itemId = itemId;
@@ -86,12 +94,14 @@ public class FabSpeedDialMenuItem implements MenuItem {
         return title;
     }
 
+    @Deprecated
     @Override
     public MenuItem setTitleCondensed(CharSequence title) {
         this.titleCondensed = title;
         return this;
     }
 
+    @Deprecated
     @Override
     public CharSequence getTitleCondensed() {
         return titleCondensed;
@@ -114,16 +124,19 @@ public class FabSpeedDialMenuItem implements MenuItem {
         return icon;
     }
 
+    @Deprecated
     @Override
     public MenuItem setIntent(Intent intent) {
-        throw new RuntimeException("");
+        throw new RuntimeException("Not implemented");
     }
 
+    @Deprecated
     @Override
     public Intent getIntent() {
-        throw new RuntimeException("");
+        throw new RuntimeException("Not implemented");
     }
 
+    @Deprecated
     @Override
     public MenuItem setShortcut(char numericChar, char alphaChar) {
         this.numericChar = numericChar;
@@ -131,45 +144,53 @@ public class FabSpeedDialMenuItem implements MenuItem {
         return this;
     }
 
+    @Deprecated
     @Override
     public MenuItem setNumericShortcut(char numericChar) {
         this.numericChar = numericChar;
         return this;
     }
 
+    @Deprecated
     @Override
     public char getNumericShortcut() {
         return numericChar;
     }
 
+    @Deprecated
     @Override
     public MenuItem setAlphabeticShortcut(char alphaChar) {
         this.alphaChar = alphaChar;
         return this;
     }
 
+    @Deprecated
     @Override
     public char getAlphabeticShortcut() {
         return alphaChar;
     }
 
+    @Deprecated
     @Override
     public MenuItem setCheckable(boolean checkable) {
         this.checkable = checkable;
         return this;
     }
 
+    @Deprecated
     @Override
     public boolean isCheckable() {
         return checkable;
     }
 
+    @Deprecated
     @Override
     public MenuItem setChecked(boolean checked) {
         this.checked = checked;
         return this;
     }
 
+    @Deprecated
     @Override
     public boolean isChecked() {
         return checked;
@@ -197,78 +218,93 @@ public class FabSpeedDialMenuItem implements MenuItem {
         return enabled;
     }
 
+    @Deprecated
     @Override
     public boolean hasSubMenu() {
-        throw new RuntimeException("");
+        throw new RuntimeException("Not implemented");
     }
 
+    @Deprecated
     @Override
     public SubMenu getSubMenu() {
-        throw new RuntimeException("");
+        throw new RuntimeException("Not implemented");
     }
 
+    @Deprecated
     @Override
     public MenuItem setOnMenuItemClickListener(OnMenuItemClickListener menuItemClickListener) {
-        throw new RuntimeException("");
+        throw new RuntimeException("Not implemented");
     }
 
+    @Deprecated
     @Override
     public ContextMenu.ContextMenuInfo getMenuInfo() {
-        throw new RuntimeException("");
+        throw new RuntimeException("Not implemented");
     }
 
+    @Deprecated
     @Override
     public void setShowAsAction(int actionEnum) {
-        throw new RuntimeException("");
+        throw new RuntimeException("Not implemented");
     }
 
+    @Deprecated
     @Override
     public MenuItem setShowAsActionFlags(int actionEnum) {
-        throw new RuntimeException("");
+        throw new RuntimeException("Not implemented");
     }
 
+    @Deprecated
     @Override
     public MenuItem setActionView(View view) {
-        throw new RuntimeException("");
+        throw new RuntimeException("Not implemented");
     }
 
+    @Deprecated
     @Override
     public MenuItem setActionView(@LayoutRes int resId) {
-        throw new RuntimeException("");
+        throw new RuntimeException("Not implemented");
     }
 
+    @Deprecated
     @Override
     public View getActionView() {
-        throw new RuntimeException("");
+        throw new RuntimeException("Not implemented");
     }
 
+    @Deprecated
     @Override
     public MenuItem setActionProvider(ActionProvider actionProvider) {
-        throw new RuntimeException("");
+        throw new RuntimeException("Not implemented");
     }
 
+    @Deprecated
     @Override
     public ActionProvider getActionProvider() {
-        throw new RuntimeException("");
+        throw new RuntimeException("Not implemented");
     }
 
+    @Deprecated
     @Override
     public boolean expandActionView() {
-        throw new RuntimeException("");
+        throw new RuntimeException("Not implemented");
     }
 
+    @Deprecated
     @Override
     public boolean collapseActionView() {
-        throw new RuntimeException("");
+        throw new RuntimeException("Not implemented");
     }
 
+    @Deprecated
     @Override
     public boolean isActionViewExpanded() {
-        throw new RuntimeException("");
+        throw new RuntimeException("Not implemented");
     }
 
+    @Deprecated
     @Override
     public MenuItem setOnActionExpandListener(OnActionExpandListener listener) {
-        throw new RuntimeException("");
+        throw new RuntimeException("Not implemented");
     }
 }

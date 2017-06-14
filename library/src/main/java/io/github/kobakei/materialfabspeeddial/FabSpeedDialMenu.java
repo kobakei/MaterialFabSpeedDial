@@ -1,9 +1,9 @@
-package io.github.kobakei.materialfabspeeddial.internal;
+package io.github.kobakei.materialfabspeeddial;
 
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.RestrictTo;
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -14,27 +14,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Menu class of FAB speed dial.
+ * This class implements {@link Menu} interface but some methods are marked as deprecated and not implemented.
+ *
  * Created by keisuke on 2017/06/13.
  */
-@RestrictTo(RestrictTo.Scope.LIBRARY)
 public class FabSpeedDialMenu implements Menu {
 
+    @NonNull
     private final Context context;
 
     private List<MenuItem> menuItems = new ArrayList<>();
 
-    public FabSpeedDialMenu(Context context) {
+    public FabSpeedDialMenu(@NonNull Context context) {
         this.context = context;
     }
 
     @Override
     public MenuItem add(CharSequence title) {
-        throw new RuntimeException("");
+        int itemId = menuItems.size() + 1;
+        return add(0, itemId, 0, title);
     }
 
     @Override
     public MenuItem add(@StringRes int titleRes) {
-        throw new RuntimeException("");
+        int itemId = menuItems.size() + 1;
+        return add(0, itemId, 0, titleRes);
     }
 
     @Override
@@ -47,72 +52,88 @@ public class FabSpeedDialMenu implements Menu {
 
     @Override
     public MenuItem add(int groupId, int itemId, int order, @StringRes int titleRes) {
-        throw new RuntimeException("");
+        MenuItem menuItem = new FabSpeedDialMenuItem(context, itemId, groupId, order);
+        menuItem.setTitle(titleRes);
+        menuItems.add(menuItem);
+        return menuItem;
     }
 
+    @Deprecated
     @Override
     public SubMenu addSubMenu(CharSequence title) {
-        throw new RuntimeException("");
+        throw new RuntimeException("Not implemented");
     }
 
+    @Deprecated
     @Override
     public SubMenu addSubMenu(@StringRes int titleRes) {
-        throw new RuntimeException("");
+        throw new RuntimeException("Not implemented");
     }
 
+    @Deprecated
     @Override
     public SubMenu addSubMenu(int groupId, int itemId, int order, CharSequence title) {
-        throw new RuntimeException("");
+        throw new RuntimeException("Not implemented");
     }
 
+    @Deprecated
     @Override
     public SubMenu addSubMenu(int groupId, int itemId, int order, @StringRes int titleRes) {
-        throw new RuntimeException("");
+        throw new RuntimeException("Not implemented");
     }
 
+    @Deprecated
     @Override
     public int addIntentOptions(int groupId, int itemId, int order, ComponentName caller, Intent[] specifics, Intent intent, int flags, MenuItem[] outSpecificItems) {
-        throw new RuntimeException("");
+        throw new RuntimeException("Not implemented");
     }
 
+    @Deprecated
     @Override
     public void removeItem(int id) {
-        throw new RuntimeException("");
+        throw new RuntimeException("Not implemented");
     }
 
+    @Deprecated
     @Override
     public void removeGroup(int groupId) {
-        throw new RuntimeException("");
+        throw new RuntimeException("Not implemented");
     }
 
+    @Deprecated
     @Override
     public void clear() {
-        throw new RuntimeException("");
+        throw new RuntimeException("Not implemented");
     }
 
+    @Deprecated
     @Override
     public void setGroupCheckable(int group, boolean checkable, boolean exclusive) {
-        throw new RuntimeException("");
+        throw new RuntimeException("Not implemented");
     }
 
+    @Deprecated
     @Override
     public void setGroupVisible(int group, boolean visible) {
-        throw new RuntimeException("");
+        throw new RuntimeException("Not implemented");
     }
 
+    @Deprecated
     @Override
     public void setGroupEnabled(int group, boolean enabled) {
-        throw new RuntimeException("");
+        throw new RuntimeException("Not implemented");
     }
 
+    @Deprecated
     @Override
     public boolean hasVisibleItems() {
-        throw new RuntimeException("");
+        throw new RuntimeException("Not implemented");
     }
 
+    @Deprecated
     @Override
     public MenuItem findItem(int id) {
-        throw new RuntimeException("");
+        throw new RuntimeException("Not implemented");
     }
 
     @Override
@@ -127,26 +148,26 @@ public class FabSpeedDialMenu implements Menu {
 
     @Override
     public void close() {
-        throw new RuntimeException("");
+        throw new RuntimeException("Not implemented");
     }
 
     @Override
     public boolean performShortcut(int keyCode, KeyEvent event, int flags) {
-        throw new RuntimeException("");
+        throw new RuntimeException("Not implemented");
     }
 
     @Override
     public boolean isShortcutKey(int keyCode, KeyEvent event) {
-        throw new RuntimeException("");
+        throw new RuntimeException("Not implemented");
     }
 
     @Override
     public boolean performIdentifierAction(int id, int flags) {
-        throw new RuntimeException("");
+        throw new RuntimeException("Not implemented");
     }
 
     @Override
     public void setQwertyMode(boolean isQwerty) {
-        throw new RuntimeException("");
+        throw new RuntimeException("Not implemented");
     }
 }

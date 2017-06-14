@@ -29,13 +29,10 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.github.kobakei.materialfabspeeddial.internal.FabSpeedDialMenu;
-
 /**
  * Layout class containing {@link FloatingActionButton} with speed dial animation.
  * Created by keisukekobayashi on 2017/06/12.
  */
-
 public class FabSpeedDial extends FrameLayout {
 
     private Menu menu;
@@ -336,6 +333,16 @@ public class FabSpeedDial extends FrameLayout {
      */
     public void inflateMenu(@MenuRes int menuId) {
         new MenuInflater(getContext()).inflate(menuId, menu);
+        refreshMenus();
+    }
+
+    /**
+     * Set FAB speed dial menu.
+     * This method recreates mini FABs and labels
+     * @param menu
+     */
+    public void setMenu(FabSpeedDialMenu menu) {
+        this.menu = menu;
         refreshMenus();
     }
 
