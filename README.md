@@ -45,7 +45,7 @@ You can put `FabSpeedDial` in your layout XML.
     app:menu="@menu/fab"/>
 ```
 
-Menu file is as below.
+Menu file is as below. Supported attributes of menu are `id`, `title`, `icon`, `orderInCategory`, `visible`, `enabled`. Other attributes will be ignored.
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
