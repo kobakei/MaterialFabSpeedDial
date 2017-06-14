@@ -30,10 +30,25 @@
         android:layout_marginLeft="0dp"
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
+
         app:fab_menu="@menu/fab"
+
         app:fab_fabBackgroundColor="@color/colorAccent"
         app:fab_fabDrawableTint="#FFF"
         app:fab_rippleColor="#FFF"
+
+        app:fab_miniFabBackgroundColor="@color/fab_mini"
+        app:fab_miniFabBackgroundColorList="@array/colors"
+        app:fab_miniFabDrawableTint="@android:color/black"
+        app:fab_miniFabDrawableTintList="@array/black_array"
+        app:fab_miniFabRippleColor="@android:color/white"
+        app:fab_miniFabRippleColorList="@array/white_array"
+
+        app:fab_miniFabTextColor="@color/fab_mini"
+        app:fab_miniFabTextColorList="@array/black_array"
+        app:fab_miniFabTextBackground="@drawable/label"
+        app:fab_miniFabTextBackgroundList="@array/labels"
+
         app:fab_touchGuard="true"
         app:fab_touchGuardColor="#80000000"/>
 
