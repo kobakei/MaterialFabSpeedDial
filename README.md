@@ -42,7 +42,7 @@ You can put `FabSpeedDial` in your layout XML.
     android:id="@+id/fab"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:menu="@menu/fab"/>
+    app:fab_menu="@menu/fab"/>
 ```
 
 Menu file is as below. Supported attributes of menu are `id`, `title`, `icon`, `orderInCategory`, `visible`, `enabled`. Other attributes will be ignored.
@@ -82,7 +82,7 @@ fab.setMenu(menu);
 
 |Attribute|Type|Description|Note|
 |---|---|---|---|
-|menu|Menu resource ID|Menu||
+|fab_menu|Menu resource ID|Menu||
 |fab_fabBackgroundColor|color int or ColorStateList|Main FAB background color||
 |fab_fabDrawable|Drawable|Main FAB drawable||
 |fab_fabDrawableTint|color int or ColorStateList|Main FAB drawable tint||
