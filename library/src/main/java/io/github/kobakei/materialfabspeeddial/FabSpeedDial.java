@@ -159,7 +159,7 @@ public class FabSpeedDial extends FrameLayout {
             }
         }
 
-        int rippleColor = ta.getColor(R.styleable.FabSpeedDial_fab_rippleColor, Color.WHITE);
+        int rippleColor = ta.getColor(R.styleable.FabSpeedDial_fab_fabRippleColor, Color.WHITE);
         fabMain.setRippleColor(rippleColor);
 
         // Mini FAB
@@ -220,7 +220,7 @@ public class FabSpeedDial extends FrameLayout {
         }
 
         // Touch guard
-        useTouchGuard = ta.getBoolean(R.styleable.FabSpeedDial_fab_touchGuard, true);
+        useTouchGuard = ta.getBoolean(R.styleable.FabSpeedDial_fab_useTouchGuard, true);
 
         int touchGuardColor = ta.getColor(R.styleable.FabSpeedDial_fab_touchGuardColor, Color.argb(128, 0, 0, 0));
         touchGuard.setBackgroundColor(touchGuardColor);

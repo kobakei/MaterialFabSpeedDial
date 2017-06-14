@@ -16,7 +16,7 @@
 
         app:fab_fabBackgroundColor="@color/colorAccent"
         app:fab_fabDrawableTint="#FFF"
-        app:fab_rippleColor="#FFF"
+        app:fab_fabRippleColor="#FFF"
 
         app:fab_miniFabBackgroundColor="@color/fab_mini"
         app:fab_miniFabBackgroundColorList="@array/colors"
@@ -30,7 +30,7 @@
         app:fab_miniFabTextBackground="@drawable/label"
         app:fab_miniFabTextBackgroundList="@array/labels"
 
-        app:fab_touchGuard="true"
+        app:fab_useTouchGuard="true"
         app:fab_touchGuardColor="#80000000"/>
 
 </FrameLayout>

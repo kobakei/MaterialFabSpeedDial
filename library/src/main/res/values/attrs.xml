@@ -11,7 +11,7 @@
         <!-- Main FAB drawable tint -->
         <attr name="fab_fabDrawableTint" format="color"/>
         <!-- Main FAB ripple color -->
-        <attr name="fab_rippleColor" format="color"/>
+        <attr name="fab_fabRippleColor" format="color"/>
 
         <!-- Mini FAB background color -->
         <attr name="fab_miniFabBackgroundColor" format="color"/>
@@ -31,7 +31,7 @@
         <attr name="fab_miniFabTextBackgroundList" format="reference"/>
 
         <!-- Use touch guard -->
-        <attr name="fab_touchGuard" format="boolean"/>
+        <attr name="fab_useTouchGuard" format="boolean"/>
         <!-- Touch guard color -->
         <attr name="fab_touchGuardColor" format="color"/>
     </declare-styleable>
