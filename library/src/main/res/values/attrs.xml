@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="FabSpeedDial">
+        <attr name="fab_menu" format="reference"/>
         <attr name="fab_fabBackgroundColor" format="color"/>
         <attr name="fab_fabDrawable" format="reference"/>
         <attr name="fab_fabDrawableTint" format="color"/>

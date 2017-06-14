@@ -15,6 +15,9 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -24,6 +27,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.github.kobakei.materialfabspeeddial.internal.FabSpeedDialMenu;
+
 /**
  * Layout class containing {@link FloatingActionButton} with speed dial animation.
  * Created by keisukekobayashi on 2017/06/12.
@@ -31,7 +36,7 @@ import java.util.List;
 
 public class FabSpeedDial extends FrameLayout {
 
-    private List<FabSpeedDialMenu> menus = new ArrayList<>();
+    private Menu menu;
 
     private FloatingActionButton fabMain;
     private LinearLayout menuContainer;
@@ -140,63 +145,56 @@ public class FabSpeedDial extends FrameLayout {
         int touchGuardColor = ta.getColor(R.styleable.FabSpeedDial_fab_touchGuardColor, Color.argb(128, 0, 0, 0));
         touchGuard.setBackgroundColor(touchGuardColor);
 
+        // Menu
+        menu = new FabSpeedDialMenu(context);
+        int menuId = ta.getResourceId(R.styleable.FabSpeedDial_fab_menu, 0);
+        if (menuId > 0) {
+            new MenuInflater(context).inflate(menuId, menu);
+        }
+
+        refreshMenus();
+
         ta.recycle();
-    }
-
-    /**
-     * Add menu item
-     * @param menu
-     */
-    public void addMenu(FabSpeedDialMenu menu) {
-        menus.add(menu);
-        refreshMenus();
-    }
-
-    /**
-     * Remove menu item
-     * @param menu
-     */
-    public void removeMenu(FabSpeedDialMenu menu) {
-        menus.remove(menu);
-        refreshMenus();
     }
 
     private void refreshMenus() {
         menuContainer.removeAllViews();
-        for (final FabSpeedDialMenu menu : menus) {
-            View itemView = createItemView(menu);
+        for (int i = 0; i < menu.size(); i++) {
+            MenuItem menuItem = menu.getItem(i);
+            View itemView = createItemView(menuItem);
             menuContainer.addView(itemView);
         }
     }
 
     @NonNull
-    private View createItemView(final FabSpeedDialMenu menu) {
+    private View createItemView(final MenuItem menuItem) {
         LayoutInflater inflater = LayoutInflater.from(getContext());
         final View itemView = inflater.inflate(R.layout.fab_speed_dial_item, menuContainer, false);
 
         // Mini FAB
         FloatingActionButton miniFab = (FloatingActionButton) itemView.findViewById(R.id.fab_mini);
-        if (menu.getDrawableId() > 0) {
-            miniFab.setImageResource(menu.getDrawableId());
+        if (menuItem.getIcon() != null) {
+            miniFab.setImageDrawable(menuItem.getIcon());
         }
-        if (menu.getDrawableTintList() != null) {
+        /*
+        if (menuItem.getDrawableTintList() != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                miniFab.setImageTintList(menu.getDrawableTintList());
+                miniFab.setImageTintList(menuItem.getDrawableTintList());
             } else {
-                miniFab.setColorFilter(menu.getDrawableTintList().getDefaultColor());
+                miniFab.setColorFilter(menuItem.getDrawableTintList().getDefaultColor());
             }
         }
-        if (menu.getFabBackgroundColor() != null) {
+        if (menuItem.getFabBackgroundColor() != null) {
             miniFab.setBackgroundTintList(menu.getFabBackgroundColor());
         }
-        if (menu.getRippleColor() != 0) {
-            miniFab.setRippleColor(menu.getRippleColor());
-        }
+        if (menuItem.getRippleColor() != 0) {
+            miniFab.setRippleColor(menuItem.getRippleColor());
+        }*/
         miniFab.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 for (OnMenuClickListener listener : listeners) {
-                    listener.onMenuClick(itemView, menu.getItemId());
+                    listener.onMenuClick(itemView, menuItem.getItemId());
                 }
                 closeMenu();
             }
@@ -204,20 +202,21 @@ public class FabSpeedDial extends FrameLayout {
 
         // TextView
         TextView label = (TextView) itemView.findViewById(R.id.text);
-        label.setText(menu.getTitle());
-        if (menu.getTitleColor() != null) {
-            label.setTextColor(menu.getTitleColor());
+        label.setText(menuItem.getTitle());
+        /*
+        if (menuItem.getTitleColor() != null) {
+            label.setTextColor(menuItem.getTitleColor());
         }
-        if (menu.getTitleBackgroundDrawableId() > 0) {
-            label.setBackgroundResource(menu.getTitleBackgroundDrawableId());
+        if (menuItem.getTitleBackgroundDrawableId() > 0) {
+            label.setBackgroundResource(menuItem.getTitleBackgroundDrawableId());
         } else {
             label.setBackgroundColor(Color.WHITE);
-        }
+        }*/
         label.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 for (OnMenuClickListener listener : listeners) {
-                    listener.onMenuClick(itemView, menu.getItemId());
+                    listener.onMenuClick(itemView, menuItem.getItemId());
                 }
                 closeMenu();
             }
@@ -238,7 +237,7 @@ public class FabSpeedDial extends FrameLayout {
                 .setDuration(MAIN_FAB_ROTATE_DURATION)
                 .start();
 
-        for (int i = 0; i < menus.size(); i++) {
+        for (int i = 0; i < menu.size(); i++) {
             View itemView = menuContainer.getChildAt(i);
 
             itemView.setAlpha(0.0f);
@@ -248,7 +247,7 @@ public class FabSpeedDial extends FrameLayout {
                     .translationY(0.0f)
                     .alpha(1.0f)
                     .setDuration(MINI_FAB_SHOW_DURATION)
-                    .setStartDelay((menus.size() - 1 - i) * MINI_FAB_SHOW_DELAY)
+                    .setStartDelay((menu.size() - 1 - i) * MINI_FAB_SHOW_DELAY)
                     .start();
         }
 
@@ -271,7 +270,7 @@ public class FabSpeedDial extends FrameLayout {
                 .setDuration(MAIN_FAB_ROTATE_DURATION)
                 .start();
 
-        for (int i = 0; i < menus.size(); i++) {
+        for (int i = 0; i < menu.size(); i++) {
             final View itemView = menuContainer.getChildAt(i);
             itemView.animate()
                     .alpha(0.0f)
