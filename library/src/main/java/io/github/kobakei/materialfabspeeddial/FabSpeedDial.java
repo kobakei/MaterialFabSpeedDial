@@ -44,7 +44,7 @@ public class FabSpeedDial extends FrameLayout {
     private LinearLayout menuContainer;
     private View touchGuard;
 
-    private List<OnMenuClickListener> listeners = new ArrayList<>();
+    private List<OnMenuItemClickListener> listeners = new ArrayList<>();
 
     @Nullable
     private ColorStateList miniFabBackgroundColor;
@@ -54,7 +54,7 @@ public class FabSpeedDial extends FrameLayout {
     private ColorStateList miniFabDrawableTint;
     @Nullable
     private List<ColorStateList> miniFabDrawableTintList;
-    @Nullable @ColorInt
+    @ColorInt
     private int miniFabRippleColor;
     @Nullable
     private List<Integer> miniFabRippleColorList;
@@ -255,7 +255,7 @@ public class FabSpeedDial extends FrameLayout {
         final View itemView = inflater.inflate(R.layout.fab_speed_dial_item, menuContainer, false);
 
         // Mini FAB
-        FloatingActionButton miniFab = (FloatingActionButton) itemView.findViewById(R.id.fab_mini);
+        final FloatingActionButton miniFab = (FloatingActionButton) itemView.findViewById(R.id.fab_mini);
         if (menuItem.getIcon() != null) {
             miniFab.setImageDrawable(menuItem.getIcon());
         }
@@ -288,18 +288,9 @@ public class FabSpeedDial extends FrameLayout {
         if (miniFabRippleColorList != null) {
             miniFab.setRippleColor(miniFabRippleColorList.get(index));
         }
-        miniFab.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (OnMenuClickListener listener : listeners) {
-                    listener.onMenuClick(itemView, menuItem.getItemId());
-                }
-                closeMenu();
-            }
-        });
 
         // TextView
-        TextView label = (TextView) itemView.findViewById(R.id.text);
+        final TextView label = (TextView) itemView.findViewById(R.id.text);
         label.setText(menuItem.getTitle());
 
         if (miniFabTextColor != null) {
@@ -316,11 +307,21 @@ public class FabSpeedDial extends FrameLayout {
             label.setBackground(miniFabTextBackgroundList.get(index));
         }
 
+        // Listener
+        miniFab.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (OnMenuItemClickListener listener : listeners) {
+                    listener.onMenuItemClick(miniFab, label, menuItem.getItemId());
+                }
+                closeMenu();
+            }
+        });
         label.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (OnMenuClickListener listener : listeners) {
-                    listener.onMenuClick(itemView, menuItem.getItemId());
+                for (OnMenuItemClickListener listener : listeners) {
+                    listener.onMenuItemClick(miniFab, label, menuItem.getItemId());
                 }
                 closeMenu();
             }
@@ -455,7 +456,7 @@ public class FabSpeedDial extends FrameLayout {
      * Add event listener
      * @param listener
      */
-    public void addOnMenuClickListener(OnMenuClickListener listener) {
+    public void addOnMenuClickListener(OnMenuItemClickListener listener) {
         listeners.add(listener);
     }
 
@@ -463,7 +464,7 @@ public class FabSpeedDial extends FrameLayout {
      * Remove event listener
      * @param listener
      */
-    public void removeOnMenuClickListener(OnMenuClickListener listener) {
+    public void removeOnMenuClickListener(OnMenuItemClickListener listener) {
         listeners.remove(listener);
     }
 
@@ -475,7 +476,36 @@ public class FabSpeedDial extends FrameLayout {
         return fabMain;
     }
 
-    public interface OnMenuClickListener {
-        void onMenuClick(View view, int itemId);
+    /**
+     * Get mini {@link FloatingActionButton} at index
+     * @param index
+     * @return
+     */
+    public FloatingActionButton getMiniFab(int index) {
+        View view = menuContainer.getChildAt(index);
+        return (FloatingActionButton) view.findViewById(R.id.fab_mini);
+    }
+
+    /**
+     * Get mini {@link TextView} at index
+     * @param index
+     * @return
+     */
+    public TextView getMiniFabTextView(int index) {
+        View view = menuContainer.getChildAt(index);
+        return (TextView) view.findViewById(R.id.text);
+    }
+
+    /**
+     * Event listener to handle menu item click event
+     */
+    public interface OnMenuItemClickListener {
+        /**
+         * Invoked when mini FAB or label is clicked
+         * @param miniFab Mini FAB of the item
+         * @param label Label of the item
+         * @param itemId Item ID
+         */
+        void onMenuItemClick(FloatingActionButton miniFab, TextView label, int itemId);
     }
 }
