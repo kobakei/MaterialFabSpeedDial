@@ -3,4 +3,29 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <!-- Array of ColorStateList -->
+    <array name="colors">
+        <item>@color/fab_mini</item>
+        <item>@color/fab_mini</item>
+        <item>@color/fab_mini</item>
+        <item>@color/fab_mini</item>
+        <item>@color/fab_mini</item>
+    </array>
+
+    <array name="white_array">
+        <item>@android:color/white</item>
+        <item>@android:color/white</item>
+        <item>@android:color/white</item>
+        <item>@android:color/white</item>
+        <item>@android:color/white</item>
+    </array>
+
+    <array name="black_array">
+        <item>@android:color/black</item>
+        <item>@android:color/black</item>
+        <item>@android:color/black</item>
+        <item>@android:color/black</item>
+        <item>@android:color/black</item>
+    </array>
 </resources>

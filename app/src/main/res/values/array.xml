@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="labels">
+        <item>@drawable/label</item>
+        <item>@drawable/label</item>
+        <item>@drawable/label</item>
+        <item>@drawable/label</item>
+        <item>@drawable/label</item>
+    </array>
+</resources>

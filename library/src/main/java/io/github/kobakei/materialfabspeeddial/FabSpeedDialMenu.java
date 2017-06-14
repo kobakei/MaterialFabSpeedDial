@@ -1,194 +1,209 @@
 package io.github.kobakei.materialfabspeeddial;
 
+import android.content.ComponentName;
 import android.content.Context;
-import android.content.res.ColorStateList;
-import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
-import android.support.annotation.DrawableRes;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
-import android.support.v4.content.ContextCompat;
+import android.support.v7.util.SortedList;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.SubMenu;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Menu class of FAB speed dial
- * Created by keisuke on 2017/06/12.
+ * Menu class of FAB speed dial.
+ * This class implements {@link Menu} interface but some methods are marked as deprecated and not implemented.
+ *
+ * Created by keisuke on 2017/06/13.
  */
+public class FabSpeedDialMenu implements Menu {
 
-public class FabSpeedDialMenu {
+    @NonNull
+    private final Context context;
 
-    private int itemId;
-    private String title;
-    private ColorStateList titleColor;
-    @DrawableRes private int titleBackgroundDrawableId;
-    @DrawableRes private int drawableId;
-    private ColorStateList drawableTintList;
-    private ColorStateList fabBackgroundColor;
-    @ColorInt private int rippleColor;
+    private SortedList<MenuItem> menuItems = new SortedList<>(MenuItem.class, new SortedList.Callback<MenuItem>() {
+        @Override
+        public int compare(MenuItem o1, MenuItem o2) {
+            return o1.getOrder() - o2.getOrder();
+        }
 
-    FabSpeedDialMenu() {
+        @Override
+        public void onChanged(int position, int count) {
 
-    }
+        }
 
-    public int getItemId() {
-        return itemId;
-    }
+        @Override
+        public boolean areContentsTheSame(MenuItem oldItem, MenuItem newItem) {
+            return false;
+        }
 
-    public void setItemId(int itemId) {
-        this.itemId = itemId;
-    }
+        @Override
+        public boolean areItemsTheSame(MenuItem item1, MenuItem item2) {
+            return false;
+        }
 
-    public String getTitle() {
-        return title;
-    }
+        @Override
+        public void onInserted(int position, int count) {
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+        }
 
-    public ColorStateList getFabBackgroundColor() {
-        return fabBackgroundColor;
-    }
+        @Override
+        public void onRemoved(int position, int count) {
 
-    public void setFabBackgroundColor(ColorStateList fabBackgroundColor) {
-        this.fabBackgroundColor = fabBackgroundColor;
-    }
+        }
 
-    public int getDrawableId() {
-        return drawableId;
-    }
+        @Override
+        public void onMoved(int fromPosition, int toPosition) {
 
-    public void setDrawableId(int drawableId) {
-        this.drawableId = drawableId;
-    }
+        }
+    });
 
-    public ColorStateList getDrawableTintList() {
-        return drawableTintList;
-    }
-
-    public void setDrawableTintList(ColorStateList drawableTint) {
-        this.drawableTintList = drawableTint;
-    }
-
-    public ColorStateList getTitleColor() {
-        return titleColor;
-    }
-
-    public void setTitleColor(ColorStateList titleColor) {
-        this.titleColor = titleColor;
-    }
-
-    public int getRippleColor() {
-        return rippleColor;
-    }
-
-    public void setRippleColor(int rippleColor) {
-        this.rippleColor = rippleColor;
+    public FabSpeedDialMenu(@NonNull Context context) {
+        this.context = context;
     }
 
     @Override
-    public int hashCode() {
-        return itemId;
+    public MenuItem add(CharSequence title) {
+        int itemId = menuItems.size() + 1;
+        return add(0, itemId, 0, title);
     }
 
-    public int getTitleBackgroundDrawableId() {
-        return titleBackgroundDrawableId;
+    @Override
+    public MenuItem add(@StringRes int titleRes) {
+        int itemId = menuItems.size() + 1;
+        return add(0, itemId, 0, titleRes);
     }
 
-    public void setTitleBackgroundDrawableId(int titleBackgroundDrawableId) {
-        this.titleBackgroundDrawableId = titleBackgroundDrawableId;
+    @Override
+    public MenuItem add(int groupId, int itemId, int order, CharSequence title) {
+        MenuItem menuItem = new FabSpeedDialMenuItem(context, itemId, groupId, order);
+        menuItem.setTitle(title);
+        menuItems.add(menuItem);
+        return menuItem;
     }
 
-    /**
-     * Builder class
-     */
-    public static class Builder {
-
-        @NonNull private final Context context;
-
-        private int itemId;
-        private String title;
-        @ColorRes private int titleColorId;
-        @ColorRes private int titleBackgroundColorId;
-        @DrawableRes private int titleBackgroundDrawableId;
-        @DrawableRes private int drawableId;
-        @ColorRes private int drawableTint;
-        @ColorRes private int fabBackgroundColorId;
-        @ColorRes private int rippleColorId;
-
-        public Builder(@NonNull Context context) {
-            this.context = context;
-        }
-
-        public FabSpeedDialMenu build() {
-            FabSpeedDialMenu menu = new FabSpeedDialMenu();
-            if (itemId == 0) {
-                throw new IllegalStateException("itemId must be set");
-            }
-            menu.setItemId(itemId);
-            menu.setTitle(title);
-            if (titleColorId > 0) {
-                menu.setTitleColor(ContextCompat.getColorStateList(context, titleColorId));
-            }
-            if (titleBackgroundDrawableId > 0) {
-                menu.setTitleBackgroundDrawableId(titleBackgroundDrawableId);
-            }
-            menu.setDrawableId(drawableId);
-            if (drawableTint > 0) {
-                menu.setDrawableTintList(ContextCompat.getColorStateList(context, drawableTint));
-            }
-            if (fabBackgroundColorId > 0) {
-                menu.setFabBackgroundColor(ContextCompat.getColorStateList(context, fabBackgroundColorId));
-            }
-            if (rippleColorId > 0) {
-                menu.setRippleColor(ContextCompat.getColor(context, rippleColorId));
-            }
-            return menu;
-        }
-
-        public Builder setItemId(int itemId) {
-            this.itemId = itemId;
-            return this;
-        }
-
-        public Builder setTitle(@StringRes int titleId) {
-            this.title = context.getString(titleId);
-            return this;
-        }
-
-        public Builder setTitle(String title) {
-            this.title = title;
-            return this;
-        }
-
-        public Builder setTitleColor(@ColorRes int colorId) {
-            this.titleColorId = colorId;
-            return this;
-        }
-
-        public Builder setTitleBackgroundDrawable(@DrawableRes int drawableId) {
-            this.titleBackgroundDrawableId = drawableId;
-            return this;
-        }
-
-        public Builder setDrawable(@DrawableRes int drawableId) {
-            this.drawableId = drawableId;
-            return this;
-        }
-
-        public Builder setDrawableTint(@ColorRes int colorId) {
-            this.drawableTint = colorId;
-            return this;
-        }
-
-        public Builder setFabBackgroundColor(@ColorRes int colorId) {
-            this.fabBackgroundColorId = colorId;
-            return this;
-        }
-
-        public Builder setRippleColor(@ColorRes int colorId) {
-            this.rippleColorId = colorId;
-            return this;
-        }
+    @Override
+    public MenuItem add(int groupId, int itemId, int order, @StringRes int titleRes) {
+        MenuItem menuItem = new FabSpeedDialMenuItem(context, itemId, groupId, order);
+        menuItem.setTitle(titleRes);
+        menuItems.add(menuItem);
+        return menuItem;
     }
 
+    @Deprecated
+    @Override
+    public SubMenu addSubMenu(CharSequence title) {
+        throw new RuntimeException("Not implemented");
+    }
+
+    @Deprecated
+    @Override
+    public SubMenu addSubMenu(@StringRes int titleRes) {
+        throw new RuntimeException("Not implemented");
+    }
+
+    @Deprecated
+    @Override
+    public SubMenu addSubMenu(int groupId, int itemId, int order, CharSequence title) {
+        throw new RuntimeException("Not implemented");
+    }
+
+    @Deprecated
+    @Override
+    public SubMenu addSubMenu(int groupId, int itemId, int order, @StringRes int titleRes) {
+        throw new RuntimeException("Not implemented");
+    }
+
+    @Deprecated
+    @Override
+    public int addIntentOptions(int groupId, int itemId, int order, ComponentName caller, Intent[] specifics, Intent intent, int flags, MenuItem[] outSpecificItems) {
+        throw new RuntimeException("Not implemented");
+    }
+
+    @Deprecated
+    @Override
+    public void removeItem(int id) {
+        throw new RuntimeException("Not implemented");
+    }
+
+    @Deprecated
+    @Override
+    public void removeGroup(int groupId) {
+        throw new RuntimeException("Not implemented");
+    }
+
+    @Deprecated
+    @Override
+    public void clear() {
+        throw new RuntimeException("Not implemented");
+    }
+
+    @Deprecated
+    @Override
+    public void setGroupCheckable(int group, boolean checkable, boolean exclusive) {
+        throw new RuntimeException("Not implemented");
+    }
+
+    @Deprecated
+    @Override
+    public void setGroupVisible(int group, boolean visible) {
+        throw new RuntimeException("Not implemented");
+    }
+
+    @Deprecated
+    @Override
+    public void setGroupEnabled(int group, boolean enabled) {
+        throw new RuntimeException("Not implemented");
+    }
+
+    @Deprecated
+    @Override
+    public boolean hasVisibleItems() {
+        throw new RuntimeException("Not implemented");
+    }
+
+    @Deprecated
+    @Override
+    public MenuItem findItem(int id) {
+        throw new RuntimeException("Not implemented");
+    }
+
+    @Override
+    public int size() {
+        return menuItems.size();
+    }
+
+    @Override
+    public MenuItem getItem(int index) {
+        return menuItems.get(index);
+    }
+
+    @Override
+    public void close() {
+        throw new RuntimeException("Not implemented");
+    }
+
+    @Override
+    public boolean performShortcut(int keyCode, KeyEvent event, int flags) {
+        throw new RuntimeException("Not implemented");
+    }
+
+    @Override
+    public boolean isShortcutKey(int keyCode, KeyEvent event) {
+        throw new RuntimeException("Not implemented");
+    }
+
+    @Override
+    public boolean performIdentifierAction(int id, int flags) {
+        throw new RuntimeException("Not implemented");
+    }
+
+    @Override
+    public void setQwertyMode(boolean isQwerty) {
+        throw new RuntimeException("Not implemented");
+    }
 }

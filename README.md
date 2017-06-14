@@ -33,51 +33,88 @@ dependencies {
 
 ## Getting Started
 
-### Layout
+### Add to layout file
+
+You can put `FabSpeedDial` in your layout XML.
 
 ```xml
 <io.github.kobakei.materialfabspeeddial.FabSpeedDial
     android:id="@+id/fab"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:fab_fabBackgroundColor="@color/red"
-    app:fab_fabDrawable="@drawable/ic_action_fab"
-    app:fab_fabDrawableTint="@color/white"
-    app:fab_rippleColor="@color/white"
-    app:fab_touchGuard="true"
-    app:fab_touchGuardColor="@color/transparent_black"/>
+    app:menu="@menu/fab"/>
 ```
 
-### Set up
+Menu file is as below. Supported attributes of menu are `id`, `title`, `icon`, `orderInCategory`, `visible`, `enabled`. Other attributes will be ignored.
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/one"
+        android:title="Cut"
+        android:icon="@drawable/ic_action_cut"
+        android:orderInCategory="1"/>
+    <item
+        android:id="@+id/two"
+        android:title="Copy"
+        android:icon="@drawable/ic_action_copy"
+        android:orderInCategory="2"/>
+    <item
+        android:id="@+id/three"
+        android:title="Paste"
+        android:icon="@drawable/ic_action_paste"
+        android:orderInCategory="3"/>
+</menu>
+```
+
+Or you can set up menu items in Java.
 
 ```java
-FabSpeedDial fab = (FabSpeedDial) findViewById(R.id.fab);
-fab.addMenu(new FabSpeedDialMenu.Builder(this)
-        .setItemId(1)
-        .setTitle("Alarm")
-        .setTitleColor(R.color.fab_mini_text)
-        .setTitleBackgroundDrawable(R.drawable.label_bg)
-        .setDrawable(R.drawable.ic_action_alarm)
-        .setDrawableTint(R.color.fab_mini_text)
-        .setFabBackgroundColor(R.color.fab_mini)
-        .setRippleColor(R.color.colorAccent)
-        .build());
+FabSpeedDialMenu menu = new FabSpeedDialMenu(this);
+menu.add("One").setIcon(R.drawable.ic_action_cut);
+menu.add("Two").setIcon(R.drawable.ic_action_copy);
+menu.add("Three").setIcon(R.drawable.ic_action_paste);
+fab.setMenu(menu);
 ```
+
+### Attributes
+
+|Attribute|Type|Description|Note|
+|---|---|---|---|
+|menu|Menu resource ID|Menu||
+|fab_fabBackgroundColor|color int or ColorStateList|Main FAB background color||
+|fab_fabDrawable|Drawable|Main FAB drawable||
+|fab_fabDrawableTint|color int or ColorStateList|Main FAB drawable tint||
+|fab_fabRippleColor|color int|Main FAB ripple color||
+|fab_miniFabBackgroundColor|color int or ColorStateList|Mini FAB background color||
+|fab_miniFabBackgroundColorList|array of color int or ColorStateList|Mini FAB background color|Array size must be same as menu item size|
+|fab_miniFabDrawableTint|color int or ColorStateList|Mini FAB drawable tint||
+|fab_miniFabDrawableTintList|array of color int or ColorStateList|Mini FAB drawable tint|Array size must be same as menu item size|
+|fab_miniFabRippleColor|color int or ColorStateList|Mini FAB ripple color||
+|fab_miniFabRippleColorList|array of color int or ColorStateList|Mini FAB ripple color|Array size must be same as menu item size|
+|fab_miniFabTextColor|color int or ColorStateList|Mini FAB text color||
+|fab_miniFabTextColorList|array of color int or ColorStateList|Mini FAB text color|Array size must be same as menu item size|
+|fab_miniFabTextBackground|drawable|Mini FAB text background||
+|fab_miniFabTextBackgroundList|drawable|Mini FAB text background|Array size must be same as menu item size|
+|fab_useTouchGuard|boolean|Use touch guard or not||
+|fab_touchGuardColor|color int|Touch guard color|Default: #80000000|
+
+`fab_miniFab***List` attribute is array version of `fab_miniFab***`. If you want to set different values to each items, please use `fab_miniFab***List` instead of `fab_miniFab***`.
 
 ### Event listener
 
 ```java
-fab.addOnMenuClickListener(new FabSpeedDial.OnMenuClickListener() {
-        @Override
-        public void onMenuClick(View view, int itemId) {
-            // do something
-        }
-    });
+fab.addOnMenuItemClickListener(new FabSpeedDial.OnMenuItemClickListener() {
+    @Override
+    public void onMenuItemClick(FloatingActionButton fab, TextView textView, int itemId) {
+        // do something
+    }
+});
 ```
 
 ## TODO
 
-- Set up menus from XML
 - Support CoordinatorLayout
 
 ## License

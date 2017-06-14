@@ -1,11 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="FabSpeedDial">
+        <!-- Menu resource -->
+        <attr name="fab_menu" format="reference"/>
+
+        <!-- Main FAB background color -->
         <attr name="fab_fabBackgroundColor" format="color"/>
+        <!-- Main FAB drawable -->
         <attr name="fab_fabDrawable" format="reference"/>
+        <!-- Main FAB drawable tint -->
         <attr name="fab_fabDrawableTint" format="color"/>
+        <!-- Main FAB ripple color -->
         <attr name="fab_rippleColor" format="color"/>
+
+        <!-- Mini FAB background color -->
+        <attr name="fab_miniFabBackgroundColor" format="color"/>
+        <attr name="fab_miniFabBackgroundColorList" format="reference"/>
+        <!-- Main FAB drawable tint -->
+        <attr name="fab_miniFabDrawableTint" format="color"/>
+        <attr name="fab_miniFabDrawableTintList" format="reference"/>
+        <!-- Mini FAB ripple color -->
+        <attr name="fab_miniFabRippleColor" format="color"/>
+        <attr name="fab_miniFabRippleColorList" format="reference"/>
+
+        <!-- Mini FAB text color -->
+        <attr name="fab_miniFabTextColor" format="color"/>
+        <attr name="fab_miniFabTextColorList" format="reference"/>
+        <!-- Mini FAB text background drawable -->
+        <attr name="fab_miniFabTextBackground" format="reference"/>
+        <attr name="fab_miniFabTextBackgroundList" format="reference"/>
+
+        <!-- Use touch guard -->
         <attr name="fab_touchGuard" format="boolean"/>
+        <!-- Touch guard color -->
         <attr name="fab_touchGuardColor" format="color"/>
     </declare-styleable>
 </resources>
