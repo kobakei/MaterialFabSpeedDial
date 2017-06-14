@@ -31,8 +31,8 @@ public class FabSpeedDialMenuItem implements MenuItem {
     private CharSequence title = null;
     private CharSequence titleCondensed = null;
     private boolean checked = false;
-    private boolean visible = false;
-    private boolean enabled = false;
+    private boolean visible = true;
+    private boolean enabled = true;
     private boolean checkable = false;
     private Drawable icon = null;
     private char alphaChar;
