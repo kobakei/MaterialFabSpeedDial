@@ -241,8 +241,10 @@ public class FabSpeedDial extends FrameLayout {
         menuContainer.removeAllViews();
         for (int i = 0; i < menu.size(); i++) {
             MenuItem menuItem = menu.getItem(i);
-            View itemView = createItemView(i, menuItem);
-            menuContainer.addView(itemView);
+            if (menuItem.isVisible()) {
+                View itemView = createItemView(i, menuItem);
+                menuContainer.addView(itemView);
+            }
         }
     }
 
@@ -358,7 +360,7 @@ public class FabSpeedDial extends FrameLayout {
                 .setDuration(MAIN_FAB_ROTATE_DURATION)
                 .start();
 
-        for (int i = 0; i < menu.size(); i++) {
+        for (int i = 0; i < menuContainer.getChildCount(); i++) {
             View itemView = menuContainer.getChildAt(i);
 
             itemView.setAlpha(0.0f);
@@ -391,7 +393,7 @@ public class FabSpeedDial extends FrameLayout {
                 .setDuration(MAIN_FAB_ROTATE_DURATION)
                 .start();
 
-        for (int i = 0; i < menu.size(); i++) {
+        for (int i = 0; i < menuContainer.getChildCount(); i++) {
             final View itemView = menuContainer.getChildAt(i);
             itemView.animate()
                     .alpha(0.0f)

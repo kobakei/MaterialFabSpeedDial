@@ -12,4 +12,9 @@
         android:id="@+id/three"
         android:title="Paste"
         android:icon="@drawable/ic_action_paste"/>
+    <item
+        android:id="@+id/four"
+        android:title="This item is invisible"
+        android:icon="@drawable/ic_action_camera"
+        android:visible="false"/>
 </menu>
