@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.RestrictTo;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.view.ActionProvider;
@@ -18,7 +19,7 @@ import android.view.View;
 /**
  * Created by keisuke on 2017/06/13.
  */
-
+@RestrictTo(RestrictTo.Scope.LIBRARY)
 public class FabSpeedDialMenuItem implements MenuItem {
 
     private final Context context;

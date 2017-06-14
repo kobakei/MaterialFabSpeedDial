@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
+import android.support.annotation.MenuRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -326,6 +327,15 @@ public class FabSpeedDial extends FrameLayout {
         });
 
         return itemView;
+    }
+
+    /**
+     * Inflate menu items from menu resource.
+     * @param menuId Menu resource ID
+     */
+    public void inflateMenu(@MenuRes int menuId) {
+        new MenuInflater(getContext()).inflate(menuId, menu);
+        refreshMenus();
     }
 
     /**
