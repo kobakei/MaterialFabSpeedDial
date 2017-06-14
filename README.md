@@ -33,46 +33,66 @@ dependencies {
 
 ## Getting Started
 
-### Layout
+### Add to layout file
+
+You can put `FabSpeedDial` in your layout XML.
 
 ```xml
 <io.github.kobakei.materialfabspeeddial.FabSpeedDial
     android:id="@+id/fab"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:fab_fabBackgroundColor="@color/red"
-    app:fab_fabDrawable="@drawable/ic_action_fab"
-    app:fab_fabDrawableTint="@color/white"
-    app:fab_rippleColor="@color/white"
-    app:fab_touchGuard="true"
-    app:fab_touchGuardColor="@color/transparent_black"/>
+    app:menu="@menu/fab"/>
 ```
 
-### Set up
+Menu file is as below.
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/one"
+        android:title="Cut"
+        android:icon="@drawable/ic_action_cut"
+        android:orderInCategory="1"/>
+    <item
+        android:id="@+id/two"
+        android:title="Copy"
+        android:icon="@drawable/ic_action_copy"
+        android:orderInCategory="2"/>
+    <item
+        android:id="@+id/three"
+        android:title="Paste"
+        android:icon="@drawable/ic_action_paste"
+        android:orderInCategory="3"/>
+</menu>
+```
+
+Or you can set up menu items in Java.
 
 ```java
-FabSpeedDial fab = (FabSpeedDial) findViewById(R.id.fab);
-fab.addMenu(new FabSpeedDialMenu.Builder(this)
-        .setItemId(1)
-        .setTitle("Alarm")
-        .setTitleColor(R.color.fab_mini_text)
-        .setTitleBackgroundDrawable(R.drawable.label_bg)
-        .setDrawable(R.drawable.ic_action_alarm)
-        .setDrawableTint(R.color.fab_mini_text)
-        .setFabBackgroundColor(R.color.fab_mini)
-        .setRippleColor(R.color.colorAccent)
-        .build());
+FabSpeedDialMenu menu = new FabSpeedDialMenu(this);
+menu.add("One").setIcon(R.drawable.ic_action_cut);
+menu.add("Two").setIcon(R.drawable.ic_action_copy);
+menu.add("Three").setIcon(R.drawable.ic_action_paste);
+fab.setMenu(menu);
 ```
+
+### Attributes
+
+|Attribute|Type|Description|
+|---|---|---|
+|menu|Menu|Menu|
 
 ### Event listener
 
 ```java
-fab.addOnMenuClickListener(new FabSpeedDial.OnMenuClickListener() {
-        @Override
-        public void onMenuClick(View view, int itemId) {
-            // do something
-        }
-    });
+fab.addOnMenuItemClickListener(new FabSpeedDial.OnMenuItemClickListener() {
+    @Override
+    public void onMenuItemClick(FloatingActionButton fab, TextView textView, int itemId) {
+        // do something
+    }
+});
 ```
 
 ## TODO
