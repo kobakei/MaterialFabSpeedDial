@@ -80,9 +80,27 @@ fab.setMenu(menu);
 
 ### Attributes
 
-|Attribute|Type|Description|
-|---|---|---|
-|menu|Menu|Menu|
+|Attribute|Type|Description|Note|
+|---|---|---|---|
+|menu|Menu resource ID|Menu||
+|fab_fabBackgroundColor|color int or ColorStateList|Main FAB background color||
+|fab_fabDrawable|Drawable|Main FAB drawable||
+|fab_fabDrawableTint|color int or ColorStateList|Main FAB drawable tint||
+|fab_fabRippleColor|color int|Main FAB ripple color||
+|fab_miniFabBackgroundColor|color int or ColorStateList|Mini FAB background color||
+|fab_miniFabBackgroundColorList|array of color int or ColorStateList|Mini FAB background color|Array size must be same as menu item size|
+|fab_miniFabDrawableTint|color int or ColorStateList|Mini FAB drawable tint||
+|fab_miniFabDrawableTintList|array of color int or ColorStateList|Mini FAB drawable tint|Array size must be same as menu item size|
+|fab_miniFabRippleColor|color int or ColorStateList|Mini FAB ripple color||
+|fab_miniFabRippleColorList|array of color int or ColorStateList|Mini FAB ripple color|Array size must be same as menu item size|
+|fab_miniFabTextColor|color int or ColorStateList|Mini FAB text color||
+|fab_miniFabTextColorList|array of color int or ColorStateList|Mini FAB text color|Array size must be same as menu item size|
+|fab_miniFabTextBackground|drawable|Mini FAB text background||
+|fab_miniFabTextBackgroundList|drawable|Mini FAB text background|Array size must be same as menu item size|
+|fab_useTouchGuard|boolean|Use touch guard or not||
+|fab_touchGuardColor|color int|Touch guard color|Default: #80000000|
+
+`fab_miniFab***List` attribute is array version of `fab_miniFab***`. If you want to set different values to each items, please use `fab_miniFab***List` instead of `fab_miniFab***`.
 
 ### Event listener
 
@@ -97,7 +115,6 @@ fab.addOnMenuItemClickListener(new FabSpeedDial.OnMenuItemClickListener() {
 
 ## TODO
 
-- Set up menus from XML
 - Support CoordinatorLayout
 
 ## License
