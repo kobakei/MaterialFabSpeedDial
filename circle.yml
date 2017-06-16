@@ -1,0 +1,18 @@
+machine:
+  java:
+    version: oraclejdk8
+  environment:
+    JAVA_OPTS: "-Xms256m -Xmx512m"
+    ADB_INSTALL_TIMEOUT: 100
+
+dependencies:
+  pre:
+    - mkdir $ANDROID_HOME/licenses
+    - echo "8933bad161af4178b1185d1a37fbf41ea5269c55" >> $ANDROID_HOME/licenses/android-sdk-license
+
+  override:
+    - ./gradlew dependencies
+
+test:
+  override:
+    - ./gradlew test
