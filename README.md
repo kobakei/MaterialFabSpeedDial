@@ -1,6 +1,6 @@
 # MaterialFabSpeedDial
 
-[![](https://jitpack.io/v/kobakei/MaterialFabSpeedDial.svg)](https://jitpack.io/#kobakei/MaterialFabSpeedDial)
+[![CircleCI](https://circleci.com/gh/kobakei/MaterialFabSpeedDial.svg?style=svg)](https://circleci.com/gh/kobakei/MaterialFabSpeedDial) [![](https://jitpack.io/v/kobakei/MaterialFabSpeedDial.svg)](https://jitpack.io/#kobakei/MaterialFabSpeedDial)
 
 <img src="https://user-images.githubusercontent.com/900756/27232285-7d558634-52f0-11e7-8bc7-19e8ca87c182.png" width="45%" />  <img src="https://user-images.githubusercontent.com/900756/27232289-7ed284ee-52f0-11e7-81e4-41d845295129.png" width="45%" />
 
