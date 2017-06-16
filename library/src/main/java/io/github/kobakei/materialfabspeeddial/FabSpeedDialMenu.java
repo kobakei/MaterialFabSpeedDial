@@ -69,13 +69,13 @@ public class FabSpeedDialMenu implements Menu {
     @Override
     public MenuItem add(CharSequence title) {
         int itemId = menuItems.size() + 1;
-        return add(0, itemId, 0, title);
+        return add(0, itemId, itemId, title);
     }
 
     @Override
     public MenuItem add(@StringRes int titleRes) {
         int itemId = menuItems.size() + 1;
-        return add(0, itemId, 0, titleRes);
+        return add(0, itemId, itemId, titleRes);
     }
 
     @Override
