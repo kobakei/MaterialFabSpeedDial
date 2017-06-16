@@ -110,6 +110,7 @@ fab.addOnMenuItemClickListener(new FabSpeedDial.OnMenuItemClickListener() {
 |fab_miniFabTextBackgroundList|drawable|Mini FAB text background|Array size must be same as menu item size|
 |fab_useTouchGuard|boolean|Use touch guard or not||
 |fab_touchGuardColor|color int|Touch guard color|Default: #80000000|
+|fab_useRippleOnPreLollipop|boolean|Use ripple on pre Lollipop|Default: true|
 
 `fab_miniFab***List` attribute is array version of `fab_miniFab***`. If you want to set different values to each items, please use `fab_miniFab***List` instead of `fab_miniFab***`.　Notice that size of resource array must be same as menu item size. 
 

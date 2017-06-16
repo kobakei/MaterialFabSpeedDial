@@ -16,6 +16,8 @@
     <io.github.kobakei.materialfabspeeddial.FabSpeedDial
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:fab_menu="@menu/fab"/>
+        app:fab_menu="@menu/fab"
+        app:fab_miniFabRippleColor="@android:color/white"
+        app:fab_useRippleOnPreLollipop="false"/>
 
 </android.support.design.widget.CoordinatorLayout>

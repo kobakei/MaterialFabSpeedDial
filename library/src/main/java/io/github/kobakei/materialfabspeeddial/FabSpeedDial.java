@@ -71,6 +71,8 @@ public class FabSpeedDial extends FrameLayout {
     private boolean isOpened = false;
     private boolean useTouchGuard = true;
 
+    private boolean useRippleOnPreLollipop = true;
+
     private static final long MAIN_FAB_ROTATE_DURATION = 200L;
     private static final long MINI_FAB_SHOW_DURATION = 100L;
     private static final long MINI_FAB_SHOW_DELAY = 50L;
@@ -142,6 +144,9 @@ public class FabSpeedDial extends FrameLayout {
 
         // Read attrs
 
+        // Ripple on pre Lollipop
+        useRippleOnPreLollipop = ta.getBoolean(R.styleable.FabSpeedDial_fab_useRippleOnPreLollipop, true);
+
         // Main FAB
         Drawable drawable = ta.getDrawable(R.styleable.FabSpeedDial_fab_fabDrawable);
         if (drawable != null) {
@@ -163,7 +168,9 @@ public class FabSpeedDial extends FrameLayout {
         }
 
         int rippleColor = ta.getColor(R.styleable.FabSpeedDial_fab_fabRippleColor, Color.WHITE);
-        fabMain.setRippleColor(rippleColor);
+        if (shouldUseRipple()) {
+            fabMain.setRippleColor(rippleColor);
+        }
 
         // Mini FAB
         miniFabBackgroundColor = ta.getColorStateList(R.styleable.FabSpeedDial_fab_miniFabBackgroundColor);
@@ -285,11 +292,13 @@ public class FabSpeedDial extends FrameLayout {
             }
         }
 
-        if (miniFabRippleColor != 0) {
-            miniFab.setRippleColor(miniFabRippleColor);
-        }
-        if (miniFabRippleColorList != null) {
-            miniFab.setRippleColor(miniFabRippleColorList.get(index));
+        if (shouldUseRipple()) {
+            if (miniFabRippleColor != 0) {
+                miniFab.setRippleColor(miniFabRippleColor);
+            }
+            if (miniFabRippleColorList != null) {
+                miniFab.setRippleColor(miniFabRippleColorList.get(index));
+            }
         }
 
         // TextView
@@ -332,6 +341,10 @@ public class FabSpeedDial extends FrameLayout {
         });
 
         return itemView;
+    }
+
+    private boolean shouldUseRipple() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP || useRippleOnPreLollipop;
     }
 
     /**

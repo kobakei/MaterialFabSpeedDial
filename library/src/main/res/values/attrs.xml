@@ -34,5 +34,8 @@
         <attr name="fab_useTouchGuard" format="boolean"/>
         <!-- Touch guard color -->
         <attr name="fab_touchGuardColor" format="color"/>
+
+        <!-- Use rippe on pre Lollipop -->
+        <attr name="fab_useRippleOnPreLollipop" format="boolean"/>
     </declare-styleable>
 </resources>
