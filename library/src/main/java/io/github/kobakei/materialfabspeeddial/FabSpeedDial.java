@@ -12,7 +12,9 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.MenuRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -33,6 +35,7 @@ import java.util.List;
  * Layout class containing {@link FloatingActionButton} with speed dial animation.
  * Created by keisukekobayashi on 2017/06/12.
  */
+@CoordinatorLayout.DefaultBehavior(FabSpeedDial.Behavior.class)
 public class FabSpeedDial extends FrameLayout {
 
     private Menu menu;
@@ -518,5 +521,24 @@ public class FabSpeedDial extends FrameLayout {
          * @param itemId Item ID
          */
         void onMenuItemClick(FloatingActionButton miniFab, TextView label, int itemId);
+    }
+
+    /**
+     * Default behavior of {@link FabSpeedDial}.
+     * It works as same as {@link android.support.design.widget.FloatingActionButton.Behavior}.
+     */
+    public static class Behavior extends CoordinatorLayout.Behavior<FabSpeedDial> {
+
+        @Override
+        public boolean layoutDependsOn(CoordinatorLayout parent, FabSpeedDial child, View dependency) {
+            return dependency instanceof Snackbar.SnackbarLayout;
+        }
+
+        @Override
+        public boolean onDependentViewChanged(CoordinatorLayout parent, FabSpeedDial child, View dependency) {
+            float diff = dependency.getTranslationY() - dependency.getHeight();
+            child.setTranslationY(diff);
+            return false;
+        }
     }
 }
