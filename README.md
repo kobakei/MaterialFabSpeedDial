@@ -78,6 +78,17 @@ menu.add("Three").setIcon(R.drawable.ic_action_paste);
 fab.setMenu(menu);
 ```
 
+### Event listener
+
+```java
+fab.addOnMenuItemClickListener(new FabSpeedDial.OnMenuItemClickListener() {
+    @Override
+    public void onMenuItemClick(FloatingActionButton fab, TextView textView, int itemId) {
+        // do something
+    }
+});
+```
+
 ### Attributes
 
 |Attribute|Type|Description|Note|
@@ -100,18 +111,7 @@ fab.setMenu(menu);
 |fab_useTouchGuard|boolean|Use touch guard or not||
 |fab_touchGuardColor|color int|Touch guard color|Default: #80000000|
 
-`fab_miniFab***List` attribute is array version of `fab_miniFab***`. If you want to set different values to each items, please use `fab_miniFab***List` instead of `fab_miniFab***`.
-
-### Event listener
-
-```java
-fab.addOnMenuItemClickListener(new FabSpeedDial.OnMenuItemClickListener() {
-    @Override
-    public void onMenuItemClick(FloatingActionButton fab, TextView textView, int itemId) {
-        // do something
-    }
-});
-```
+`fab_miniFab***List` attribute is array version of `fab_miniFab***`. If you want to set different values to each items, please use `fab_miniFab***List` instead of `fab_miniFab***`.　Notice that size of resource array must be same as menu item size. 
 
 ## License
 
