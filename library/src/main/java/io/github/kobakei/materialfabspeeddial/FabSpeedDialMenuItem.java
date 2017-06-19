@@ -7,6 +7,8 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.content.res.AppCompatResources;
 import android.view.ActionProvider;
 import android.view.ContextMenu;
 import android.view.MenuItem;
@@ -105,7 +107,7 @@ public class FabSpeedDialMenuItem implements MenuItem {
 
     @Override
     public MenuItem setIcon(@DrawableRes int iconRes) {
-        this.icon = ContextCompat.getDrawable(context, iconRes);
+        this.icon = AppCompatResources.getDrawable(context, iconRes);
         return this;
     }
 

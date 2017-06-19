@@ -15,6 +15,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.content.res.AppCompatResources;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -148,8 +149,9 @@ public class FabSpeedDial extends FrameLayout {
         useRippleOnPreLollipop = ta.getBoolean(R.styleable.FabSpeedDial_fab_useRippleOnPreLollipop, true);
 
         // Main FAB
-        Drawable drawable = ta.getDrawable(R.styleable.FabSpeedDial_fab_fabDrawable);
-        if (drawable != null) {
+        int drawableId = ta.getResourceId(R.styleable.FabSpeedDial_fab_fabDrawable, 0);
+        if (drawableId != 0) {
+            Drawable drawable = AppCompatResources.getDrawable(context, drawableId);
             fabMain.setImageDrawable(drawable);
         }
 

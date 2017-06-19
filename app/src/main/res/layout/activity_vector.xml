@@ -19,6 +19,7 @@
 
         app:fab_menu="@menu/fab_vector"
 
+        app:fab_fabDrawable="@drawable/ic_sentiment_neutral_black_24dp"
         app:fab_fabBackgroundColor="@color/colorAccent"
         app:fab_fabDrawableTint="#FFF"
         app:fab_fabRippleColor="#FFF"
