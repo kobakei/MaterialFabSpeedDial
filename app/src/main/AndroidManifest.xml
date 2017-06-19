@@ -18,7 +18,8 @@
         </activity>
         <activity android:name=".SimpleActivity" />
         <activity android:name=".Simple2Activity" />
-        <activity android:name=".CoordinatorActivity"></activity>
+        <activity android:name=".CoordinatorActivity" />
+        <activity android:name=".VectorActivity"></activity>
     </application>
 
 </manifest>

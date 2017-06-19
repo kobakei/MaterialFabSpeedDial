@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/one"
+        android:title="Cut"
+        android:icon="@drawable/ic_content_cut_black_24dp"
+        android:orderInCategory="1"/>
+    <item
+        android:id="@+id/two"
+        android:title="Copy"
+        android:icon="@drawable/ic_content_copy_black_24dp"
+        android:orderInCategory="2"/>
+    <item
+        android:id="@+id/three"
+        android:title="Paste"
+        android:icon="@drawable/ic_content_paste_black_24dp"
+        android:orderInCategory="3"/>
+</menu>

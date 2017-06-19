@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.github.dcendents.android-maven'
 
-group='com.github.kobakei'
+group = 'com.github.kobakei'
 
 android {
     compileSdkVersion 25
