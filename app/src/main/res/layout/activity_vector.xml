@@ -36,7 +36,7 @@
         app:fab_miniFabTextBackground="@drawable/label"
         app:fab_miniFabTextBackgroundList="@array/labels"
 
-        app:fab_useTouchGuard="true"
+        app:fab_useTouchGuard="false"
         app:fab_touchGuardColor="#80000000"/>
 
 </FrameLayout>

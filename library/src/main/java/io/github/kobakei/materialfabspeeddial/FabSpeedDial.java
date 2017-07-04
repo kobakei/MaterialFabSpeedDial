@@ -7,6 +7,7 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Parcelable;
 import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
 import android.support.annotation.MenuRes;
@@ -93,6 +94,31 @@ public class FabSpeedDial extends FrameLayout {
     public FabSpeedDial(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initLayout(context, attrs, defStyleAttr);
+    }
+
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        Parcelable parcelable = super.onSaveInstanceState();
+        SavedState savedState = new SavedState(parcelable);
+        savedState.isOpend = isOpened;
+        return savedState;
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        if (!(state instanceof SavedState)) {
+            super.onRestoreInstanceState(state);
+            return;
+        }
+
+        SavedState ss = (SavedState) state;
+        super.onRestoreInstanceState(ss.getSuperState());
+
+        if (ss.isOpend) {
+            openMenu();
+        } else {
+            closeMenu();
+        }
     }
 
     private void initLayout(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
@@ -554,6 +580,15 @@ public class FabSpeedDial extends FrameLayout {
             float diff = dependency.getTranslationY() - dependency.getHeight();
             child.setTranslationY(diff);
             return false;
+        }
+    }
+
+    private static class SavedState extends BaseSavedState {
+
+        boolean isOpend = false;
+
+        public SavedState(Parcelable source) {
+            super(source);
         }
     }
 }
