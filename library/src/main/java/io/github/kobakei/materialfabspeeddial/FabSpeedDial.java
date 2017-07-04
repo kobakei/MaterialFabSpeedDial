@@ -7,6 +7,7 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
@@ -25,6 +26,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -43,6 +45,7 @@ public class FabSpeedDial extends FrameLayout {
     private Menu menu;
 
     private FloatingActionButton fabMain;
+    private LinearLayout fabsContainer;
     private LinearLayout menuContainer;
     private View touchGuard;
 
@@ -72,7 +75,7 @@ public class FabSpeedDial extends FrameLayout {
 
     private boolean isOpened = false;
     private boolean useTouchGuard = true;
-
+    private boolean useRevealEffect = true;
     private boolean useRippleOnPreLollipop = true;
 
     private static final long MAIN_FAB_ROTATE_DURATION = 200L;
@@ -140,6 +143,7 @@ public class FabSpeedDial extends FrameLayout {
             }
         });
 
+        fabsContainer = (LinearLayout) findViewById(R.id.fabs_container);
         menuContainer = (LinearLayout) findViewById(R.id.menu_container);
 
         touchGuard = findViewById(R.id.touch_guard);
@@ -259,6 +263,7 @@ public class FabSpeedDial extends FrameLayout {
 
         // Touch guard
         useTouchGuard = ta.getBoolean(R.styleable.FabSpeedDial_fab_useTouchGuard, true);
+        useRevealEffect = ta.getBoolean(R.styleable.FabSpeedDial_fab_useRevealEffect, true);
 
         int touchGuardColor = ta.getColor(R.styleable.FabSpeedDial_fab_touchGuardColor, Color.argb(128, 0, 0, 0));
         touchGuard.setBackgroundColor(touchGuardColor);
@@ -423,6 +428,21 @@ public class FabSpeedDial extends FrameLayout {
         menuContainer.setVisibility(View.VISIBLE);
         if (useTouchGuard) {
             touchGuard.setVisibility(View.VISIBLE);
+            if (useRevealEffect) {
+                touchGuard.setAlpha(0.0f);
+                new Handler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        touchGuard.setAlpha(1.0f);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            int cx = fabsContainer.getLeft() + (fabMain.getLeft() + fabMain.getRight()) / 2;
+                            int cy = fabsContainer.getTop() + (fabMain.getTop() + fabMain.getBottom()) / 2;
+                            float radius = Math.max(touchGuard.getWidth(), touchGuard.getHeight()) * 2.0f;
+                            ViewAnimationUtils.createCircularReveal(touchGuard, cx, cy, 0, radius).start();
+                        }
+                    }
+                });
+            }
         }
         isOpened = true;
     }
@@ -469,7 +489,36 @@ public class FabSpeedDial extends FrameLayout {
                     .start();
         }
 
-        touchGuard.setVisibility(View.GONE);
+        if (useTouchGuard) {
+            touchGuard.animate()
+                    .alpha(0.0f)
+                    .setDuration(MINI_FAB_DISMISS_DURATION)
+                    .setListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            touchGuard.setAlpha(1.0f);
+                            touchGuard.setVisibility(View.GONE);
+                            touchGuard.animate().setListener(null).start();
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animator animation) {
+
+                        }
+                    })
+                    .start();
+        }
+
         isOpened = false;
     }
 
