@@ -3,6 +3,7 @@ package io.github.kobakei.materialfabspeeddial;
 import android.animation.Animator;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -28,6 +29,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
+import android.view.ViewPropertyAnimator;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -336,34 +338,37 @@ public class FabSpeedDial extends FrameLayout {
 
         // TextView
         final TextView label = (TextView) itemView.findViewById(R.id.text);
-        label.setText(menuItem.getTitle());
-        label.setEnabled(menuItem.isEnabled());
+        if (label != null) {
+            label.setText(menuItem.getTitle());
+            label.setEnabled(menuItem.isEnabled());
 
-        if (miniFabTextColor != null) {
-            label.setTextColor(miniFabTextColor);
-        }
-        if (miniFabTextColorList != null) {
-            label.setTextColor(miniFabTextColorList.get(index));
-        }
+            if (miniFabTextColor != null) {
+                label.setTextColor(miniFabTextColor);
+            }
+            if (miniFabTextColorList != null) {
+                label.setTextColor(miniFabTextColorList.get(index));
+            }
 
-        if (miniFabTextBackground != null) {
-            label.setBackground(miniFabTextBackground);
-        }
-        if (miniFabTextBackgroundList != null) {
-            label.setBackground(miniFabTextBackgroundList.get(index));
+            if (miniFabTextBackground != null) {
+                label.setBackground(miniFabTextBackground);
+            }
+            if (miniFabTextBackgroundList != null) {
+                label.setBackground(miniFabTextBackgroundList.get(index));
+            }
+
+            label.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    for (OnMenuItemClickListener listener : listeners) {
+                        listener.onMenuItemClick(miniFab, label, menuItem.getItemId());
+                    }
+                    closeMenu();
+                    }
+            });
         }
 
         // Listener
         miniFab.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (OnMenuItemClickListener listener : listeners) {
-                    listener.onMenuItemClick(miniFab, label, menuItem.getItemId());
-                }
-                closeMenu();
-            }
-        });
-        label.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 for (OnMenuItemClickListener listener : listeners) {
@@ -415,11 +420,16 @@ public class FabSpeedDial extends FrameLayout {
             View itemView = menuContainer.getChildAt(i);
 
             itemView.setAlpha(0.0f);
-            itemView.setTranslationY(MINI_FAB_SHOW_TRANSLATION);
 
-            itemView.animate()
-                    .translationY(0.0f)
-                    .alpha(1.0f)
+            ViewPropertyAnimator animator = itemView.animate();
+            if (getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                itemView.setTranslationX(MINI_FAB_SHOW_TRANSLATION);
+                animator.translationX(0.0f);
+            } else {
+                itemView.setTranslationY(MINI_FAB_SHOW_TRANSLATION);
+                animator.translationY(0.0f);
+            }
+            animator.alpha(1.0f)
                     .setDuration(MINI_FAB_SHOW_DURATION)
                     .setStartDelay((menu.size() - 1 - i) * MINI_FAB_SHOW_DELAY)
                     .start();
@@ -607,10 +617,10 @@ public class FabSpeedDial extends FrameLayout {
         /**
          * Invoked when mini FAB or label is clicked
          * @param miniFab Mini FAB of the item
-         * @param label Label of the item
+         * @param label Label of the item. May be null on landscape mode.
          * @param itemId Item ID
          */
-        void onMenuItemClick(FloatingActionButton miniFab, TextView label, int itemId);
+        void onMenuItemClick(FloatingActionButton miniFab, @Nullable TextView label, int itemId);
     }
 
     /**
