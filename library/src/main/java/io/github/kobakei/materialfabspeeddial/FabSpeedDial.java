@@ -80,6 +80,8 @@ public class FabSpeedDial extends FrameLayout {
     private boolean useRevealEffect = true;
     private boolean useRippleOnPreLollipop = true;
 
+    private boolean isLandscapeLayout = false;
+
     private static final long MAIN_FAB_ROTATE_DURATION = 200L;
     private static final long MINI_FAB_SHOW_DURATION = 100L;
     private static final long MINI_FAB_SHOW_DELAY = 50L;
@@ -127,6 +129,8 @@ public class FabSpeedDial extends FrameLayout {
     }
 
     private void initLayout(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
+        isLandscapeLayout = context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.fab_speed_dial, this, false);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -422,7 +426,7 @@ public class FabSpeedDial extends FrameLayout {
             itemView.setAlpha(0.0f);
 
             ViewPropertyAnimator animator = itemView.animate();
-            if (getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            if (isLandscapeLayout) {
                 itemView.setTranslationX(MINI_FAB_SHOW_TRANSLATION);
                 animator.translationX(0.0f);
             } else {
