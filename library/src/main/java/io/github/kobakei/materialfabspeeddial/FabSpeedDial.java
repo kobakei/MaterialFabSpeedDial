@@ -354,7 +354,7 @@ public class FabSpeedDial extends FrameLayout {
             }
 
             if (miniFabTextBackground != null) {
-                label.setBackground(miniFabTextBackground);
+                label.setBackground(miniFabTextBackground.mutate().getConstantState().newDrawable());
             }
             if (miniFabTextBackgroundList != null) {
                 label.setBackground(miniFabTextBackgroundList.get(index));
