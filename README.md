@@ -31,6 +31,14 @@ dependencies {
 
 `LATEST_VERSION` is [![](https://jitpack.io/v/kobakei/MaterialFabSpeedDial.svg)](https://jitpack.io/#kobakei/MaterialFabSpeedDial)
 
+You can also use snapshot version.
+
+```groovy
+dependencies {
+    compile 'com.github.kobakei:MaterialFabSpeedDial:master-SNAPSHOT'
+}
+```
+
 ## Getting Started
 
 ### Add to layout file
