@@ -107,24 +107,22 @@ public class FabSpeedDial extends FrameLayout {
     protected Parcelable onSaveInstanceState() {
         Parcelable parcelable = super.onSaveInstanceState();
         SavedState savedState = new SavedState(parcelable);
-        savedState.isOpend = isOpened;
+        savedState.isOpened = isOpened;
         return savedState;
     }
 
     @Override
     protected void onRestoreInstanceState(Parcelable state) {
-        if (!(state instanceof SavedState)) {
-            super.onRestoreInstanceState(state);
-            return;
-        }
-
-        SavedState ss = (SavedState) state;
-        super.onRestoreInstanceState(ss.getSuperState());
-
-        if (ss.isOpend) {
-            openMenu();
+        if (state instanceof SavedState) {
+            SavedState ss = (SavedState) state;
+            if (ss.isOpened) {
+                openMenu();
+            } else {
+                closeMenu();
+            }
+            super.onRestoreInstanceState(ss.getSuperState());
         } else {
-            closeMenu();
+            super.onRestoreInstanceState(BaseSavedState.EMPTY_STATE);
         }
     }
 
@@ -648,7 +646,7 @@ public class FabSpeedDial extends FrameLayout {
 
     private static class SavedState extends BaseSavedState {
 
-        boolean isOpend = false;
+        boolean isOpened = false;
 
         public SavedState(Parcelable source) {
             super(source);
