@@ -88,7 +88,16 @@ fab.setMenu(menu);
 
 ### Event listener
 
+You can detect menu open/close event and menu item click event.
+
 ```java
+fab.addOnStateChangeListener(new FabSpeedDial.OnStateChangeListener() {
+    @Override
+    public void onStateChange(boolean open) {
+        // do something
+    }
+});
+
 fab.addOnMenuItemClickListener(new FabSpeedDial.OnMenuItemClickListener() {
     @Override
     public void onMenuItemClick(FloatingActionButton fab, TextView textView, int itemId) {
