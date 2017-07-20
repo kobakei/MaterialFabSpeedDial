@@ -22,5 +22,11 @@ public class SimpleActivity extends AppCompatActivity {
                 Toast.makeText(SimpleActivity.this, "Click: " + itemId, Toast.LENGTH_SHORT).show();
             }
         });
+        fab.addOnStateChangeListener(new FabSpeedDial.OnStateChangeListener() {
+            @Override
+            public void onStateChange(boolean open) {
+                Toast.makeText(SimpleActivity.this, "Open: " + open, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

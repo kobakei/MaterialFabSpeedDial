@@ -51,7 +51,8 @@ public class FabSpeedDial extends FrameLayout {
     private LinearLayout menuContainer;
     private View touchGuard;
 
-    private List<OnMenuItemClickListener> listeners = new ArrayList<>();
+    private List<OnMenuItemClickListener> menuClickListeners = new ArrayList<>();
+    private List<OnStateChangeListener> stateChangeListeners = new ArrayList<>();
 
     @Nullable
     private ColorStateList miniFabBackgroundColor;
@@ -361,7 +362,7 @@ public class FabSpeedDial extends FrameLayout {
             label.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    for (OnMenuItemClickListener listener : listeners) {
+                    for (OnMenuItemClickListener listener : menuClickListeners) {
                         listener.onMenuItemClick(miniFab, label, menuItem.getItemId());
                     }
                     closeMenu();
@@ -373,7 +374,7 @@ public class FabSpeedDial extends FrameLayout {
         miniFab.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (OnMenuItemClickListener listener : listeners) {
+                for (OnMenuItemClickListener listener : menuClickListeners) {
                     listener.onMenuItemClick(miniFab, label, menuItem.getItemId());
                 }
                 closeMenu();
@@ -457,6 +458,9 @@ public class FabSpeedDial extends FrameLayout {
             }
         }
         isOpened = true;
+        for (OnStateChangeListener listener : stateChangeListeners) {
+            listener.onStateChange(isOpened);
+        }
     }
 
     /**
@@ -532,6 +536,9 @@ public class FabSpeedDial extends FrameLayout {
         }
 
         isOpened = false;
+        for (OnStateChangeListener listener : stateChangeListeners) {
+            listener.onStateChange(isOpened);
+        }
     }
 
     /**
@@ -573,7 +580,7 @@ public class FabSpeedDial extends FrameLayout {
      * @param listener
      */
     public void addOnMenuItemClickListener(OnMenuItemClickListener listener) {
-        listeners.add(listener);
+        menuClickListeners.add(listener);
     }
 
     /**
@@ -581,7 +588,23 @@ public class FabSpeedDial extends FrameLayout {
      * @param listener
      */
     public void removeOnMenuItemClickListener(OnMenuItemClickListener listener) {
-        listeners.remove(listener);
+        menuClickListeners.remove(listener);
+    }
+
+    /**
+     * Add event listener
+     * @param listener
+     */
+    public void addOnStateChangeListener(OnStateChangeListener listener) {
+        stateChangeListeners.add(listener);
+    }
+
+    /**
+     * Remove event listener
+     * @param listener
+     */
+    public void removeOnStateChangeListener(OnStateChangeListener listener) {
+        stateChangeListeners.remove(listener);
     }
 
     /**
@@ -623,6 +646,17 @@ public class FabSpeedDial extends FrameLayout {
          * @param itemId Item ID
          */
         void onMenuItemClick(FloatingActionButton miniFab, @Nullable TextView label, int itemId);
+    }
+
+    /**
+     * Event listener to handle FAB open/close state
+     */
+    public interface OnStateChangeListener {
+        /**
+         * Invoked when FAB is opened or closed
+         * @param open True if opened.
+         */
+        void onStateChange(boolean open);
     }
 
     /**
