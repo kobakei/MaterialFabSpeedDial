@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/kobakei/MaterialFabSpeedDial.svg?style=svg)](https://circleci.com/gh/kobakei/MaterialFabSpeedDial) [![](https://jitpack.io/v/kobakei/MaterialFabSpeedDial.svg)](https://jitpack.io/#kobakei/MaterialFabSpeedDial)
 
-<img src="https://user-images.githubusercontent.com/900756/28452393-6f0c58ca-6e2d-11e7-8c73-93f70996578c.gif" width="25%" /><img src="https://user-images.githubusercontent.com/900756/28452390-6d983efa-6e2d-11e7-8547-f143f9282de1.gif" width="25%" />   <img src="https://user-images.githubusercontent.com/900756/27837816-90560b02-6121-11e7-9a60-13cabe60ff91.png" width="45%" />
+<img src="https://user-images.githubusercontent.com/900756/28452393-6f0c58ca-6e2d-11e7-8c73-93f70996578c.gif" width="25%" /> <img src="https://user-images.githubusercontent.com/900756/28452390-6d983efa-6e2d-11e7-8547-f143f9282de1.gif" width="25%" />   <img src="https://user-images.githubusercontent.com/900756/27837816-90560b02-6121-11e7-9a60-13cabe60ff91.png" width="45%" />
 
 This project aims to provide [FloatingActionButton's speed dial pattern in material design guideline](https://material.io/guidelines/components/buttons-floating-action-button.html#buttons-floating-action-button-transitions).
 
