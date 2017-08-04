@@ -592,6 +592,13 @@ public class FabSpeedDial extends FrameLayout {
     }
 
     /**
+     * Remove all event listeners
+     */
+    public void clearOnMenuItemClickListeners() {
+        menuClickListeners.clear();
+    }
+
+    /**
      * Add event listener
      * @param listener
      */
@@ -605,6 +612,13 @@ public class FabSpeedDial extends FrameLayout {
      */
     public void removeOnStateChangeListener(OnStateChangeListener listener) {
         stateChangeListeners.remove(listener);
+    }
+
+    /**
+     * Remove all event listener
+     */
+    public void clearOnStateChangeListeners() {
+        stateChangeListeners.clear();
     }
 
     /**
