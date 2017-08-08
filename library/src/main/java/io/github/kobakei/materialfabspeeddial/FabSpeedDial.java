@@ -353,7 +353,10 @@ public class FabSpeedDial extends FrameLayout {
             }
 
             if (miniFabTextBackground != null) {
-                label.setBackground(miniFabTextBackground.mutate().getConstantState().newDrawable());
+                Drawable.ConstantState cs = miniFabTextBackground.mutate().getConstantState();
+                if (cs != null) {
+                    label.setBackground(cs.newDrawable());
+                }
             }
             if (miniFabTextBackgroundList != null) {
                 label.setBackground(miniFabTextBackgroundList.get(index));
@@ -392,6 +395,7 @@ public class FabSpeedDial extends FrameLayout {
      * Inflate menu items from menu resource.
      * @param menuId Menu resource ID
      */
+    @SuppressWarnings("unused")
     public void inflateMenu(@MenuRes int menuId) {
         new MenuInflater(getContext()).inflate(menuId, menu);
         refreshMenus();
@@ -400,8 +404,9 @@ public class FabSpeedDial extends FrameLayout {
     /**
      * Set FAB speed dial menu.
      * This method recreates mini FABs and labels
-     * @param menu
+     * @param menu Menu
      */
+    @SuppressWarnings("unused")
     public void setMenu(FabSpeedDialMenu menu) {
         this.menu = menu;
         refreshMenus();
@@ -410,6 +415,7 @@ public class FabSpeedDial extends FrameLayout {
     /**
      * Open menu
      */
+    @SuppressWarnings("unused")
     public void openMenu() {
         if (isOpened) {
             return;
@@ -466,6 +472,7 @@ public class FabSpeedDial extends FrameLayout {
     /**
      * Close menu
      */
+    @SuppressWarnings("unused")
     public void closeMenu() {
         if (!isOpened) {
             return;
@@ -545,6 +552,7 @@ public class FabSpeedDial extends FrameLayout {
      * Check whether menu is opened or closes
      * @return true if opened, false otherwise
      */
+    @SuppressWarnings("unused")
     public boolean isOpeningMenu() {
         return isOpened;
     }
@@ -552,6 +560,7 @@ public class FabSpeedDial extends FrameLayout {
     /**
      * Show main {@link FloatingActionButton}
      */
+    @SuppressWarnings("unused")
     public void show() {
         fabMain.show();
     }
@@ -559,6 +568,7 @@ public class FabSpeedDial extends FrameLayout {
     /**
      * Hide main {@link FloatingActionButton}
      */
+    @SuppressWarnings("unused")
     public void hide() {
         if (isOpened) {
             closeMenu();
@@ -571,55 +581,78 @@ public class FabSpeedDial extends FrameLayout {
      * Check whether main {@link FloatingActionButton} is shown or not
      * @return true if main FAB is shown, false otherwise
      */
+    @SuppressWarnings("unused")
     public boolean isShown() {
         return fabMain.isShown();
     }
 
     /**
      * Add event listener
-     * @param listener
+     * @param listener event listener
      */
+    @SuppressWarnings("unused")
     public void addOnMenuItemClickListener(OnMenuItemClickListener listener) {
         menuClickListeners.add(listener);
     }
 
     /**
      * Remove event listener
-     * @param listener
+     * @param listener event listener
      */
+    @SuppressWarnings("unused")
     public void removeOnMenuItemClickListener(OnMenuItemClickListener listener) {
         menuClickListeners.remove(listener);
     }
 
     /**
-     * Add event listener
-     * @param listener
+     * Remove all event listeners
      */
+    @SuppressWarnings("unused")
+    public void removeAllOnMenuItemClickListeners() {
+        menuClickListeners.clear();
+    }
+
+    /**
+     * Add event listener
+     * @param listener event listener
+     */
+    @SuppressWarnings("unused")
     public void addOnStateChangeListener(OnStateChangeListener listener) {
         stateChangeListeners.add(listener);
     }
 
     /**
      * Remove event listener
-     * @param listener
+     * @param listener event listener
      */
+    @SuppressWarnings("unused")
     public void removeOnStateChangeListener(OnStateChangeListener listener) {
         stateChangeListeners.remove(listener);
     }
 
     /**
-     * Get main {@link FloatingActionButton}
-     * @return
+     * Remove all event listeners
      */
+    @SuppressWarnings("unused")
+    public void removeAllOnStateChangeListeners() {
+        stateChangeListeners.clear();
+    }
+
+    /**
+     * Get main {@link FloatingActionButton}
+     * @return Main FAB
+     */
+    @SuppressWarnings("unused")
     public FloatingActionButton getMainFab() {
         return fabMain;
     }
 
     /**
      * Get mini {@link FloatingActionButton} at index
-     * @param index
-     * @return
+     * @param index Index of mini FAB
+     * @return Mini FAB
      */
+    @SuppressWarnings("unused")
     public FloatingActionButton getMiniFab(int index) {
         View view = menuContainer.getChildAt(index);
         return (FloatingActionButton) view.findViewById(R.id.fab_mini);
@@ -627,9 +660,10 @@ public class FabSpeedDial extends FrameLayout {
 
     /**
      * Get mini {@link TextView} at index
-     * @param index
-     * @return
+     * @param index Index of mini FAB
+     * @return TextView
      */
+    @SuppressWarnings("unused")
     public TextView getMiniFabTextView(int index) {
         View view = menuContainer.getChildAt(index);
         return (TextView) view.findViewById(R.id.text);
@@ -663,7 +697,7 @@ public class FabSpeedDial extends FrameLayout {
      * Default behavior of {@link FabSpeedDial}.
      * It works as same as {@link android.support.design.widget.FloatingActionButton.Behavior}.
      */
-    public static class Behavior extends CoordinatorLayout.Behavior<FabSpeedDial> {
+    static class Behavior extends CoordinatorLayout.Behavior<FabSpeedDial> {
 
         @Override
         public boolean layoutDependsOn(CoordinatorLayout parent, FabSpeedDial child, View dependency) {
@@ -682,7 +716,7 @@ public class FabSpeedDial extends FrameLayout {
 
         boolean isOpened = false;
 
-        public SavedState(Parcelable source) {
+        SavedState(Parcelable source) {
             super(source);
         }
     }
