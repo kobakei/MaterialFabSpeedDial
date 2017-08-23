@@ -39,5 +39,8 @@
 
         <!-- Use rippe on pre Lollipop -->
         <attr name="fab_useRippleOnPreLollipop" format="boolean"/>
+
+        <!-- Extra margin between FABs -->
+        <attr name="fab_extraMargin" format="dimension"/>
     </declare-styleable>
 </resources>

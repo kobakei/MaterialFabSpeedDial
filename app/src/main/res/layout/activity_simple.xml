@@ -30,6 +30,8 @@
         app:fab_miniFabTextBackground="@drawable/label"
         app:fab_miniFabTextBackgroundList="@array/labels"
 
+        app:fab_extraMargin="-8dp"
+
         app:fab_useTouchGuard="true"
         app:fab_touchGuardColor="#80000000"
         app:fab_useRevealEffect="true"/>

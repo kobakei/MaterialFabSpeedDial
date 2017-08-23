@@ -76,6 +76,8 @@ public class FabSpeedDial extends FrameLayout {
     @Nullable
     private List<Drawable> miniFabTextBackgroundList;
 
+    private int extraMarginPixel = 0;
+
     private boolean isOpened = false;
     private boolean useTouchGuard = true;
     private boolean useRevealEffect = true;
@@ -180,6 +182,9 @@ public class FabSpeedDial extends FrameLayout {
 
         // Read attrs
 
+        // Extra margin
+        extraMarginPixel = ta.getDimensionPixelSize(R.styleable.FabSpeedDial_fab_extraMargin, 0);
+
         // Ripple on pre Lollipop
         useRippleOnPreLollipop = ta.getBoolean(R.styleable.FabSpeedDial_fab_useRippleOnPreLollipop, true);
 
@@ -208,6 +213,11 @@ public class FabSpeedDial extends FrameLayout {
         if (shouldUseRipple()) {
             fabMain.setRippleColor(rippleColor);
         }
+
+        MarginLayoutParams mainParams = (MarginLayoutParams) fabMain.getLayoutParams();
+        mainParams.setMargins(mainParams.leftMargin, mainParams.topMargin + extraMarginPixel, mainParams.rightMargin, mainParams.bottomMargin);
+        fabMain.setLayoutParams(mainParams);
+
 
         // Mini FAB
         miniFabBackgroundColor = ta.getColorStateList(R.styleable.FabSpeedDial_fab_miniFabBackgroundColor);
@@ -338,6 +348,10 @@ public class FabSpeedDial extends FrameLayout {
                 miniFab.setRippleColor(miniFabRippleColorList.get(index));
             }
         }
+
+        MarginLayoutParams params = (MarginLayoutParams) miniFab.getLayoutParams();
+        params.setMargins(params.leftMargin, params.topMargin + extraMarginPixel, params.rightMargin, params.bottomMargin + extraMarginPixel);
+        miniFab.setLayoutParams(params);
 
         // TextView
         final TextView label = (TextView) itemView.findViewById(R.id.text);

@@ -35,7 +35,7 @@
             android:layout_gravity="end"
             android:src="@drawable/ic_action_add"
             app:fabSize="normal"
-            app:useCompatPadding="true"/>
+            app:useCompatPadding="true" />
 
     </LinearLayout>
 
