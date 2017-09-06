@@ -711,7 +711,7 @@ public class FabSpeedDial extends FrameLayout {
      * Default behavior of {@link FabSpeedDial}.
      * It works as same as {@link android.support.design.widget.FloatingActionButton.Behavior}.
      */
-    static class Behavior extends CoordinatorLayout.Behavior<FabSpeedDial> {
+    public static class Behavior extends CoordinatorLayout.Behavior<FabSpeedDial> {
 
         @Override
         public boolean layoutDependsOn(CoordinatorLayout parent, FabSpeedDial child, View dependency) {
