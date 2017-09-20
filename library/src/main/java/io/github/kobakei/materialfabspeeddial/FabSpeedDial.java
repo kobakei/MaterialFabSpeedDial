@@ -713,6 +713,14 @@ public class FabSpeedDial extends FrameLayout {
      */
     public static class Behavior extends CoordinatorLayout.Behavior<FabSpeedDial> {
 
+        public Behavior() {
+            super();
+        }
+
+        public Behavior(Context context, AttributeSet attrs) {
+            super();
+        }
+
         @Override
         public boolean layoutDependsOn(CoordinatorLayout parent, FabSpeedDial child, View dependency) {
             return dependency instanceof Snackbar.SnackbarLayout;
