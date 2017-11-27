@@ -115,6 +115,7 @@ fab.addOnMenuItemClickListener(new FabSpeedDial.OnMenuItemClickListener() {
 |fab_fabDrawable|Drawable|Main FAB drawable||
 |fab_fabDrawableTint|color int or ColorStateList|Main FAB drawable tint||
 |fab_fabRippleColor|color int|Main FAB ripple color||
+|fab_fabRotationAngle|float|Main FAB rotation angle (degree)|Default: 45.0|
 |fab_miniFabBackgroundColor|color int or ColorStateList|Mini FAB background color||
 |fab_miniFabBackgroundColorList|array of color int or ColorStateList|Mini FAB background color|Array size must be same as menu item size|
 |fab_miniFabDrawableTint|color int or ColorStateList|Mini FAB drawable tint||
