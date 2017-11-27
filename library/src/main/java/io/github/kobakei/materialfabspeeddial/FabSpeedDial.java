@@ -76,6 +76,8 @@ public class FabSpeedDial extends FrameLayout {
     @Nullable
     private List<Drawable> miniFabTextBackgroundList;
 
+    private float fabRotationAngle = 45.0f;
+
     private int extraMarginPixel = 0;
 
     private boolean isOpened = false;
@@ -138,7 +140,7 @@ public class FabSpeedDial extends FrameLayout {
         params.gravity = Gravity.BOTTOM | Gravity.END;
         addView(view, params);
 
-        fabMain = (FloatingActionButton) findViewById(R.id.fab_main);
+        fabMain = findViewById(R.id.fab_main);
         fabMain.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,8 +152,8 @@ public class FabSpeedDial extends FrameLayout {
             }
         });
 
-        fabsContainer = (LinearLayout) findViewById(R.id.fabs_container);
-        menuContainer = (LinearLayout) findViewById(R.id.menu_container);
+        fabsContainer = findViewById(R.id.fabs_container);
+        menuContainer = findViewById(R.id.menu_container);
 
         touchGuard = findViewById(R.id.touch_guard);
         touchGuard.setOnClickListener(new OnClickListener() {
@@ -217,6 +219,8 @@ public class FabSpeedDial extends FrameLayout {
         MarginLayoutParams mainParams = (MarginLayoutParams) fabMain.getLayoutParams();
         mainParams.setMargins(mainParams.leftMargin, mainParams.topMargin + extraMarginPixel, mainParams.rightMargin, mainParams.bottomMargin);
         fabMain.setLayoutParams(mainParams);
+
+        fabRotationAngle = ta.getFloat(R.styleable.FabSpeedDial_fab_fabRotationAngle, 45.0f);
 
 
         // Mini FAB
@@ -312,7 +316,7 @@ public class FabSpeedDial extends FrameLayout {
         final View itemView = inflater.inflate(R.layout.fab_speed_dial_item, menuContainer, false);
 
         // Mini FAB
-        final FloatingActionButton miniFab = (FloatingActionButton) itemView.findViewById(R.id.fab_mini);
+        final FloatingActionButton miniFab = itemView.findViewById(R.id.fab_mini);
         if (menuItem.getIcon() != null) {
             miniFab.setImageDrawable(menuItem.getIcon());
         }
@@ -354,7 +358,7 @@ public class FabSpeedDial extends FrameLayout {
         miniFab.setLayoutParams(params);
 
         // TextView
-        final TextView label = (TextView) itemView.findViewById(R.id.text);
+        final TextView label = itemView.findViewById(R.id.text);
         if (label != null) {
             label.setText(menuItem.getTitle());
             label.setEnabled(menuItem.isEnabled());
@@ -435,7 +439,7 @@ public class FabSpeedDial extends FrameLayout {
             return;
         }
         fabMain.setSelected(true);
-        fabMain.animate().rotation(45.0f)
+        fabMain.animate().rotation(fabRotationAngle)
                 .setDuration(MAIN_FAB_ROTATE_DURATION)
                 .start();
 
