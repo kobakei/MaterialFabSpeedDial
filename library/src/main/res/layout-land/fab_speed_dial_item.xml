@@ -8,6 +8,17 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical|end">
 
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:padding="8dp"
+        tools:text="Menu Title"
+        android:textSize="14sp"
+        android:textColor="@android:color/black"
+        android:visibility="gone"/>
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_mini"
         android:layout_width="wrap_content"

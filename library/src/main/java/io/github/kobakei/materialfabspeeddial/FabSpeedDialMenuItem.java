@@ -107,7 +107,9 @@ public class FabSpeedDialMenuItem implements MenuItem {
 
     @Override
     public MenuItem setIcon(@DrawableRes int iconRes) {
-        this.icon = AppCompatResources.getDrawable(context, iconRes);
+        if (iconRes > 0) {
+            this.icon = AppCompatResources.getDrawable(context, iconRes);
+        }
         return this;
     }
 
