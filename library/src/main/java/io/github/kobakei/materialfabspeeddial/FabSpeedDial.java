@@ -394,6 +394,11 @@ public class FabSpeedDial extends FrameLayout {
 
         if (miniFab.getVisibility() == GONE) {
             label.setVisibility(VISIBLE);
+            float scale = getResources().getDisplayMetrics().density;
+            int padding = (int) (28 * scale + 0.5f);
+            MarginLayoutParams labelParams = (MarginLayoutParams) miniFab.getLayoutParams();
+            params.setMargins(labelParams.leftMargin, labelParams.topMargin + padding + extraMarginPixel, labelParams.rightMargin, labelParams.bottomMargin + padding + extraMarginPixel);
+            label.setLayoutParams(labelParams);
         }
 
         // Listener
