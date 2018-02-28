@@ -133,10 +133,19 @@ public class FabSpeedDial extends FrameLayout {
     }
 
     private void initLayout(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
-        isLandscapeLayout = context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.FabSpeedDial, defStyleAttr, 0);
+
+        // landscape
+        boolean canShowHorizontally = ta.getBoolean(R.styleable.FabSpeedDial_fab_showHorizontallyOnLandscape, true);
+        isLandscapeLayout = canShowHorizontally && (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE);
 
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.fab_speed_dial, this, false);
+        View view;
+        if (isLandscapeLayout) {
+            view = inflater.inflate(R.layout.fab_speed_dial_land, this, false);
+        } else {
+            view = inflater.inflate(R.layout.fab_speed_dial, this, false);
+        }
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         params.gravity = Gravity.BOTTOM | Gravity.END;
         addView(view, params);
@@ -163,8 +172,6 @@ public class FabSpeedDial extends FrameLayout {
                 closeMenu();
             }
         });
-
-        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.FabSpeedDial, defStyleAttr, 0);
 
         // Key listener to handle BACK key
         setFocusable(true);
@@ -314,7 +321,12 @@ public class FabSpeedDial extends FrameLayout {
     @NonNull
     private View createItemView(int index, final MenuItem menuItem) {
         LayoutInflater inflater = LayoutInflater.from(getContext());
-        final View itemView = inflater.inflate(R.layout.fab_speed_dial_item, menuContainer, false);
+        final View itemView;
+        if (isLandscapeLayout) {
+            itemView = inflater.inflate(R.layout.fab_speed_dial_item_land, menuContainer, false);
+        } else {
+            itemView = inflater.inflate(R.layout.fab_speed_dial_item, menuContainer, false);
+        }
 
         // Mini FAB
         final FloatingActionButton miniFab = itemView.findViewById(R.id.fab_mini);

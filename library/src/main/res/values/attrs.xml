@@ -44,5 +44,8 @@
 
         <!-- Extra margin between FABs -->
         <attr name="fab_extraMargin" format="dimension"/>
+
+        <!-- Show menus horizontally on landscape mode -->
+        <attr name="fab_showHorizontallyOnLandscape" format="boolean"/>
     </declare-styleable>
 </resources>
