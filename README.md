@@ -132,7 +132,17 @@ fab.addOnMenuItemClickListener(new FabSpeedDial.OnMenuItemClickListener() {
 |fab_useRevealEffect|boolean|Use reveal effect of touch guard|Works on API level >= 21. Default: true|
 |fab_extraMargin|dimension|Extra margin between FABs|All FABs have padding `app:useCompatPadding="true"`. To reduce space, set negative value.|
 
-`fab_miniFab***List` attribute is array version of `fab_miniFab***`. If you want to set different values to each items, please use `fab_miniFab***List` instead of `fab_miniFab***`.　Notice that size of resource array must be same as menu item size. 
+`fab_miniFab***List` attribute is array version of `fab_miniFab***`. If you want to set different values to each items, please use `fab_miniFab***List` instead of `fab_miniFab***`.　Notice that size of resource array must be same as menu item size.
+
+## Known Issues
+
+- In Android 4.x, there is an issue about **selector of vector drawable XML**. If you want to use such XML, according to this [StackOverflow](https://stackoverflow.com/a/38012842), you need to add the following snippet in your Activity classes.
+
+```Java
+static {
+    AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+}
+```
 
 ## License
 

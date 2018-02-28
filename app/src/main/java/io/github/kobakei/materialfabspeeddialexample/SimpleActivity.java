@@ -15,7 +15,7 @@ public class SimpleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simple);
 
-        final FabSpeedDial fab = (FabSpeedDial) findViewById(R.id.fab);
+        final FabSpeedDial fab = findViewById(R.id.fab);
         fab.addOnMenuItemClickListener(new FabSpeedDial.OnMenuItemClickListener() {
             @Override
             public void onMenuItemClick(FloatingActionButton fab, TextView label, int itemId) {

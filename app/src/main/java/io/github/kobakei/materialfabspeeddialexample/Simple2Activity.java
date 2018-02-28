@@ -16,7 +16,7 @@ public class Simple2Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simple2);
 
-        final FabSpeedDial fab = (FabSpeedDial) findViewById(R.id.fab);
+        final FabSpeedDial fab = findViewById(R.id.fab);
 
         // Create menu in code
         FabSpeedDialMenu menu = new FabSpeedDialMenu(this);
