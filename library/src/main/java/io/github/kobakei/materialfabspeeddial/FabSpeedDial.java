@@ -318,9 +318,12 @@ public class FabSpeedDial extends FrameLayout {
         // Mini FAB
         final FloatingActionButton miniFab = itemView.findViewById(R.id.fab_mini);
         if (menuItem.getIcon() != null) {
+            miniFab.setVisibility(VISIBLE);
             miniFab.setImageDrawable(menuItem.getIcon());
+            miniFab.setEnabled(menuItem.isEnabled());
+        } else {
+            miniFab.setVisibility(GONE);
         }
-        miniFab.setEnabled(menuItem.isEnabled());
 
         if (miniFabBackgroundColor != null) {
             miniFab.setBackgroundTintList(miniFabBackgroundColor);
@@ -359,36 +362,43 @@ public class FabSpeedDial extends FrameLayout {
 
         // TextView
         final TextView label = itemView.findViewById(R.id.text);
-        if (label != null) {
-            label.setText(menuItem.getTitle());
-            label.setEnabled(menuItem.isEnabled());
+        label.setText(menuItem.getTitle());
+        label.setEnabled(menuItem.isEnabled());
 
-            if (miniFabTextColor != null) {
-                label.setTextColor(miniFabTextColor);
-            }
-            if (miniFabTextColorList != null) {
-                label.setTextColor(miniFabTextColorList.get(index));
-            }
+        if (miniFabTextColor != null) {
+            label.setTextColor(miniFabTextColor);
+        }
+        if (miniFabTextColorList != null) {
+            label.setTextColor(miniFabTextColorList.get(index));
+        }
 
-            if (miniFabTextBackground != null) {
-                Drawable.ConstantState cs = miniFabTextBackground.mutate().getConstantState();
-                if (cs != null) {
-                    label.setBackground(cs.newDrawable());
+        if (miniFabTextBackground != null) {
+            Drawable.ConstantState cs = miniFabTextBackground.mutate().getConstantState();
+            if (cs != null) {
+                label.setBackground(cs.newDrawable());
+            }
+        }
+        if (miniFabTextBackgroundList != null) {
+            label.setBackground(miniFabTextBackgroundList.get(index));
+        }
+
+        label.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (OnMenuItemClickListener listener : menuClickListeners) {
+                    listener.onMenuItemClick(miniFab, label, menuItem.getItemId());
                 }
+                closeMenu();
             }
-            if (miniFabTextBackgroundList != null) {
-                label.setBackground(miniFabTextBackgroundList.get(index));
-            }
+        });
 
-            label.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    for (OnMenuItemClickListener listener : menuClickListeners) {
-                        listener.onMenuItemClick(miniFab, label, menuItem.getItemId());
-                    }
-                    closeMenu();
-                    }
-            });
+        if (miniFab.getVisibility() == GONE) {
+            label.setVisibility(VISIBLE);
+            float scale = getResources().getDisplayMetrics().density;
+            int padding = (int) (28 * scale + 0.5f);
+            MarginLayoutParams labelParams = (MarginLayoutParams) miniFab.getLayoutParams();
+            params.setMargins(labelParams.leftMargin, labelParams.topMargin + padding + extraMarginPixel, labelParams.rightMargin, labelParams.bottomMargin + padding + extraMarginPixel);
+            label.setLayoutParams(labelParams);
         }
 
         // Listener
