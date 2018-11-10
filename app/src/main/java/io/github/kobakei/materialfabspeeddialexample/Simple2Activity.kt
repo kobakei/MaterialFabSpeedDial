@@ -1,8 +1,10 @@
 package io.github.kobakei.materialfabspeeddialexample
 
 import android.os.Bundle
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import io.github.kobakei.materialfabspeeddial.FabSpeedDial
 import io.github.kobakei.materialfabspeeddial.FabSpeedDialMenu
 
