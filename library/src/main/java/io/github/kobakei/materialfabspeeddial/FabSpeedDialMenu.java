@@ -3,16 +3,13 @@ package io.github.kobakei.materialfabspeeddial;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
-import android.support.v7.util.SortedList;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+import androidx.recyclerview.widget.SortedList;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Menu class of FAB speed dial.

@@ -10,16 +10,16 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Parcelable;
-import android.support.annotation.AttrRes;
-import android.support.annotation.ColorInt;
-import android.support.annotation.MenuRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.view.ViewCompat;
-import android.support.v7.content.res.AppCompatResources;
+import androidx.annotation.AttrRes;
+import androidx.annotation.ColorInt;
+import androidx.annotation.MenuRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.core.view.ViewCompat;
+import androidx.appcompat.content.res.AppCompatResources;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -726,7 +726,7 @@ public class FabSpeedDial extends FrameLayout {
 
     /**
      * Default behavior of {@link FabSpeedDial}.
-     * It works as same as {@link android.support.design.widget.FloatingActionButton.Behavior}.
+     * It works as same as {@link FloatingActionButton.Behavior}.
      */
     public static class Behavior extends CoordinatorLayout.Behavior<FabSpeedDial> {
 
