@@ -46,7 +46,7 @@ Version 2 is major update and has some big changes.
 - Migrate to Android X
 - Convert Java to Kotlin
 
-If you don't use v2, please use `1.2.1` instead.
+If you don't want to use v2, please use `1.2.1` instead.
 
 ## Getting Started
 
