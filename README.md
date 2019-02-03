@@ -76,34 +76,28 @@ Menu file is as below. Supported attributes of menu are `id`, `title`, `icon`, `
 </menu>
 ```
 
-Or you can set up menu items in Java.
+Or you can set up menu items programmatically.
 
-```java
-FabSpeedDialMenu menu = new FabSpeedDialMenu(this);
-menu.add("One").setIcon(R.drawable.ic_action_cut);
-menu.add("Two").setIcon(R.drawable.ic_action_copy);
-menu.add("Three").setIcon(R.drawable.ic_action_paste);
-fab.setMenu(menu);
+```kotlin
+val menu = FabSpeedDialMenu(this)
+menu.add("One").setIcon(R.drawable.ic_action_cut)
+menu.add("Two").setIcon(R.drawable.ic_action_copy)
+menu.add("Three").setIcon(R.drawable.ic_action_paste)
+fab.setMenu(menu)
 ```
 
 ### Event listener
 
 You can detect menu open/close event and menu item click event.
 
-```java
-fab.addOnStateChangeListener(new FabSpeedDial.OnStateChangeListener() {
-    @Override
-    public void onStateChange(boolean open) {
-        // do something
-    }
-});
+```kotlin
+fab.addOnStateChangeListener { open ->
+    // do something
+}
 
-fab.addOnMenuItemClickListener(new FabSpeedDial.OnMenuItemClickListener() {
-    @Override
-    public void onMenuItemClick(FloatingActionButton fab, TextView textView, int itemId) {
-        // do something
-    }
-});
+fab.addOnMenuItemClickListener { fab, textView, itemId ->
+    // do something
+}
 ```
 
 ### Attributes
@@ -148,7 +142,7 @@ static {
 ## License
 
 ```
-Copyright (c) 2017 Keisuke Kobayashi
+Copyright (c) 2017-present Keisuke Kobayashi
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
