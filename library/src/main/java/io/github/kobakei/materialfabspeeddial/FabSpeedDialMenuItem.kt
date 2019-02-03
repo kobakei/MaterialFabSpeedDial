@@ -20,7 +20,12 @@ import android.view.View
  *
  * Created by keisuke on 2017/06/13.
  */
-class FabSpeedDialMenuItem(private val context: Context, private val itemId: Int, private val groupId: Int, private val order: Int) : MenuItem {
+class FabSpeedDialMenuItem(
+        private val context: Context,
+        private val itemId: Int,
+        private val groupId: Int,
+        private val order: Int
+) : MenuItem {
 
     private var title: CharSequence? = null
     private var titleCondensed: CharSequence? = null

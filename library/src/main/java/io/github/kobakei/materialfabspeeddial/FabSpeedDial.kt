@@ -38,8 +38,7 @@ typealias OnStateChange = (open: Boolean) -> Unit
  * Layout class containing [FloatingActionButton] with speed dial animation.
  * Created by keisukekobayashi on 2017/06/12.
  */
-@CoordinatorLayout.DefaultBehavior(FabSpeedDial.Behavior::class)
-class FabSpeedDial : FrameLayout {
+class FabSpeedDial : FrameLayout, CoordinatorLayout.AttachedBehavior {
 
     private var menu: Menu? = null
 
@@ -125,11 +124,10 @@ class FabSpeedDial : FrameLayout {
         isLandscapeLayout = canShowHorizontally && context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
         val inflater = LayoutInflater.from(context)
-        val view: View
-        if (isLandscapeLayout) {
-            view = inflater.inflate(R.layout.fab_speed_dial_land, this, false)
+        val view = if (isLandscapeLayout) {
+            inflater.inflate(R.layout.fab_speed_dial_land, this, false)
         } else {
-            view = inflater.inflate(R.layout.fab_speed_dial, this, false)
+            inflater.inflate(R.layout.fab_speed_dial, this, false)
         }
         val params = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
         params.gravity = Gravity.BOTTOM or Gravity.END
@@ -154,7 +152,7 @@ class FabSpeedDial : FrameLayout {
         isFocusable = true
         isFocusableInTouchMode = true
         requestFocus()
-        setOnKeyListener(OnKeyListener { v, keyCode, event ->
+        setOnKeyListener(OnKeyListener { _, keyCode, _ ->
             if (keyCode == KeyEvent.KEYCODE_BACK) {
                 if (isOpeningMenu) {
                     closeMenu()
@@ -307,11 +305,10 @@ class FabSpeedDial : FrameLayout {
 
     private fun createItemView(index: Int, menuItem: MenuItem): View {
         val inflater = LayoutInflater.from(context)
-        val itemView: View
-        if (isLandscapeLayout) {
-            itemView = inflater.inflate(R.layout.fab_speed_dial_item_land, menuContainer, false)
+        val itemView = if (isLandscapeLayout) {
+            inflater.inflate(R.layout.fab_speed_dial_item_land, menuContainer, false)
         } else {
-            itemView = inflater.inflate(R.layout.fab_speed_dial_item, menuContainer, false)
+            inflater.inflate(R.layout.fab_speed_dial_item, menuContainer, false)
         }
 
         // Mini FAB
@@ -547,6 +544,7 @@ class FabSpeedDial : FrameLayout {
     /**
      * Show main [FloatingActionButton]
      */
+    @Suppress("unused")
     fun show() {
         mainFab.show()
     }
@@ -554,6 +552,7 @@ class FabSpeedDial : FrameLayout {
     /**
      * Hide main [FloatingActionButton]
      */
+    @Suppress("unused")
     fun hide() {
         if (isOpeningMenu) {
             closeMenu()
@@ -640,16 +639,19 @@ class FabSpeedDial : FrameLayout {
         return view.findViewById<View>(R.id.text) as TextView
     }
 
+    override fun getBehavior(): CoordinatorLayout.Behavior<*> = Behavior()
+
     /**
      * Default behavior of [FabSpeedDial].
      * It works as same as [FloatingActionButton.Behavior].
      */
+    @Suppress("unused")
     class Behavior : CoordinatorLayout.Behavior<FabSpeedDial> {
 
         constructor() : super()
 
-        @Suppress("UNUSED_PARAMETER")
-        constructor(context: Context, attrs: AttributeSet) : super()
+        constructor(@Suppress("UNUSED_PARAMETER") context: Context,
+                    @Suppress("UNUSED_PARAMETER") attrs: AttributeSet) : super()
 
         override fun layoutDependsOn(parent: CoordinatorLayout, child: FabSpeedDial, dependency: View): Boolean =
                 dependency is Snackbar.SnackbarLayout
