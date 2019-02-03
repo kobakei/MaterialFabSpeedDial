@@ -13,16 +13,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
         android:padding="8dp"
         tools:text="Menu Title"
         android:textSize="14sp"
         android:textColor="@android:color/black" />
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_mini"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
         app:fabSize="mini"
         app:useCompatPadding="true"/>
 
