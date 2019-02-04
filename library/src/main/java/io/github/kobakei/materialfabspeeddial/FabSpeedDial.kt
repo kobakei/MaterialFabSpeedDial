@@ -307,6 +307,8 @@ class FabSpeedDial : FrameLayout, CoordinatorLayout.AttachedBehavior {
         refreshMenus()
 
         ta.recycle()
+        clipChildren = false
+        clipToPadding = false
     }
 
     private fun refreshMenus() {
