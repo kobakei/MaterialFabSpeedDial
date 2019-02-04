@@ -125,13 +125,11 @@ class FabSpeedDial : FrameLayout, CoordinatorLayout.AttachedBehavior {
 
         val inflater = LayoutInflater.from(context)
         val view = if (isLandscapeLayout) {
-            inflater.inflate(R.layout.fab_speed_dial_land, this, false)
+            inflater.inflate(R.layout.fab_speed_dial_land, this, true)
         } else {
-            inflater.inflate(R.layout.fab_speed_dial, this, false)
+            inflater.inflate(R.layout.fab_speed_dial, this, true)
         }
-        val params = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-        params.gravity = Gravity.BOTTOM or Gravity.END
-        addView(view, params)
+
 
         mainFab = findViewById(R.id.fab_main)
         mainFab.setOnClickListener {

@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <FrameLayout
         android:id="@+id/touch_guard"
@@ -15,17 +11,17 @@
 
     <LinearLayout
         android:id="@+id/fabs_container"
-        android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end">
+        android:layout_gravity="bottom|end"
+        android:orientation="horizontal">
 
         <LinearLayout
             android:id="@+id/menu_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_gravity="end|center_vertical"
+            android:orientation="horizontal"
             android:visibility="gone"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -39,4 +35,4 @@
 
     </LinearLayout>
 
-</FrameLayout>
+</merge>
