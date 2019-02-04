@@ -25,6 +25,10 @@
         <attr name="fab_miniFabRippleColor" format="color"/>
         <attr name="fab_miniFabRippleColorList" format="reference"/>
 
+        <!-- Control the FAB text text apperance -->
+        <attr name="fab_miniFabLabelTextAppearance" format="reference"/>
+        <attr name="fab_miniFabLabelElevation" format="dimension"/>
+
         <!-- Mini FAB text color -->
         <attr name="fab_miniFabTextColor" format="color"/>
         <attr name="fab_miniFabTextColorList" format="reference"/>
@@ -47,5 +51,13 @@
 
         <!-- Show menus horizontally on landscape mode -->
         <attr name="fab_showHorizontallyOnLandscape" format="boolean"/>
+
+        <!-- Add extra padding for shadows on Android 5.0+ devices -->
+        <attr name="fab_useCompatPadding" format="boolean"/>
+
+        <!-- Spacing between mini FAB elements -->
+        <attr name="fab_miniFabSpacing" format="dimension"/>
+
+
     </declare-styleable>
 </resources>

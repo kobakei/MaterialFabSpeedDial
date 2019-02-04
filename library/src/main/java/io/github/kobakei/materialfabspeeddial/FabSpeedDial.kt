@@ -6,6 +6,8 @@ import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.ShapeDrawable
+import android.graphics.drawable.shapes.RectShape
 import android.os.Build
 import android.os.Handler
 import android.os.Parcelable
@@ -17,10 +19,12 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
+import androidx.annotation.Dimension
 import androidx.annotation.MenuRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
+import androidx.core.widget.TextViewCompat
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 
@@ -67,10 +71,13 @@ class FabSpeedDial : FrameLayout, CoordinatorLayout.AttachedBehavior {
     private var miniFabTextColorList: MutableList<ColorStateList>? = null
     private var miniFabTextBackground: Drawable? = null
     private var miniFabTextBackgroundList: MutableList<Drawable>? = null
+    private var miniFabLabelTextAppearance : Int = 0
+    private var miniFabLabelElevation : Int = 0
 
     private var fabRotationAngle = 45.0f
 
     private var extraMarginPixel = 0
+    private var useCompatPadding = false
 
     /**
      * Check whether menu is opened or closes
@@ -83,6 +90,13 @@ class FabSpeedDial : FrameLayout, CoordinatorLayout.AttachedBehavior {
     private var useRippleOnPreLollipop = true
 
     private var isLandscapeLayout = false
+
+    @Dimension
+    var miniFabSpacing : Int = 0
+        set(value)  {
+            field = value
+            applyMiniFabSpacing(value)
+        }
 
     constructor(context: Context) : super(context) {
         initLayout(context, null, 0)
@@ -130,7 +144,6 @@ class FabSpeedDial : FrameLayout, CoordinatorLayout.AttachedBehavior {
             inflater.inflate(R.layout.fab_speed_dial, this, true)
         }
 
-
         mainFab = findViewById(R.id.fab_main)
         mainFab.setOnClickListener {
             if (isOpeningMenu) {
@@ -161,6 +174,8 @@ class FabSpeedDial : FrameLayout, CoordinatorLayout.AttachedBehavior {
         })
 
         // Read attrs
+        useCompatPadding = ta.getBoolean(R.styleable.FabSpeedDial_fab_useCompatPadding, true)
+        mainFab.useCompatPadding = useCompatPadding
 
         // Extra margin
         extraMarginPixel = ta.getDimensionPixelSize(R.styleable.FabSpeedDial_fab_extraMargin, 0)
@@ -200,6 +215,7 @@ class FabSpeedDial : FrameLayout, CoordinatorLayout.AttachedBehavior {
 
         fabRotationAngle = ta.getFloat(R.styleable.FabSpeedDial_fab_fabRotationAngle, 45.0f)
 
+        miniFabSpacing = ta.getDimensionPixelSize(R.styleable.FabSpeedDial_fab_miniFabSpacing, 0)
 
         // Mini FAB
         miniFabBackgroundColor = ta.getColorStateList(R.styleable.FabSpeedDial_fab_miniFabBackgroundColor)
@@ -243,6 +259,9 @@ class FabSpeedDial : FrameLayout, CoordinatorLayout.AttachedBehavior {
         }
 
         // Mini FAB text
+        miniFabLabelTextAppearance = ta.getResourceId(R.styleable.FabSpeedDial_fab_miniFabLabelTextAppearance, -1)
+        miniFabLabelElevation = ta.getDimensionPixelSize(R.styleable.FabSpeedDial_fab_miniFabLabelElevation, 0)
+
         miniFabTextColor = ta.getColorStateList(R.styleable.FabSpeedDial_fab_miniFabTextColor)
         val miniFabTextColorListId = ta.getResourceId(R.styleable.FabSpeedDial_fab_miniFabTextColorList, 0)
         if (miniFabTextColorListId != 0) {
@@ -350,12 +369,17 @@ class FabSpeedDial : FrameLayout, CoordinatorLayout.AttachedBehavior {
         val params = miniFab.layoutParams as ViewGroup.MarginLayoutParams
         params.setMargins(params.leftMargin, params.topMargin + extraMarginPixel, params.rightMargin, params.bottomMargin + extraMarginPixel)
         miniFab.layoutParams = params
+        miniFab.useCompatPadding = useCompatPadding
 
         // TextView
         val label = itemView.findViewById<TextView>(R.id.text)
         if (label != null) {
             label.text = menuItem.title
             label.isEnabled = menuItem.isEnabled
+            if (miniFabLabelTextAppearance != -1) {
+                TextViewCompat.setTextAppearance(label, miniFabLabelTextAppearance)
+            }
+            ViewCompat.setElevation(label, miniFabLabelElevation.toFloat())
 
             if (miniFabTextColor != null) {
                 label.setTextColor(miniFabTextColor)
@@ -395,6 +419,25 @@ class FabSpeedDial : FrameLayout, CoordinatorLayout.AttachedBehavior {
 
     private fun shouldUseRipple(): Boolean =
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP || useRippleOnPreLollipop
+
+    private fun applyMiniFabSpacing(@Dimension sizePixels: Int) {
+        if (sizePixels > 0) {
+            val drawable = ShapeDrawable(RectShape())
+            if (isLandscapeLayout) {
+                drawable.intrinsicWidth = sizePixels
+                drawable.intrinsicHeight = 1
+            } else {
+                drawable.intrinsicWidth = 1
+                drawable.intrinsicHeight = sizePixels
+            }
+            drawable.paint.color = Color.TRANSPARENT
+            menuContainer.dividerDrawable = drawable
+            menuContainer.showDividers = LinearLayout.SHOW_DIVIDER_MIDDLE or LinearLayout.SHOW_DIVIDER_END
+        } else {
+            menuContainer.dividerDrawable = null
+            menuContainer.showDividers = LinearLayout.SHOW_DIVIDER_NONE
+        }
+    }
 
     /**
      * Inflate menu items from menu resource.
