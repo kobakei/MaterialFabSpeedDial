@@ -138,7 +138,7 @@ class FabSpeedDial : FrameLayout, CoordinatorLayout.AttachedBehavior {
         isLandscapeLayout = canShowHorizontally && context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
         val inflater = LayoutInflater.from(context)
-        val view = if (isLandscapeLayout) {
+        if (isLandscapeLayout) {
             inflater.inflate(R.layout.fab_speed_dial_land, this, true)
         } else {
             inflater.inflate(R.layout.fab_speed_dial, this, true)
