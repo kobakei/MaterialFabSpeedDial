@@ -7,10 +7,16 @@
     android:layout_height="match_parent"
     tools:context="io.github.kobakei.materialfabspeeddialexample.SimpleActivity">
 
+    <FrameLayout
+        android:id="@+id/touchGuard"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
     <io.github.kobakei.materialfabspeeddial.FabSpeedDial
         android:id="@+id/fab"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
 
         app:fab_menu="@menu/fab"
 
@@ -29,10 +35,11 @@
         app:fab_miniFabTextColorList="@array/black_array"
         app:fab_miniFabTextBackground="@drawable/label"
         app:fab_miniFabTextBackgroundList="@array/labels"
-
+        app:fab_useCompatPadding="true"
         app:fab_extraMargin="-8dp"
 
         app:fab_useTouchGuard="true"
+        app:fab_touchGuardId="@+id/touchGuard"
         app:fab_touchGuardColor="#80000000"
         app:fab_useRevealEffect="true"
         app:fab_showHorizontallyOnLandscape="true"/>

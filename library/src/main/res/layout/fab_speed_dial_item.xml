@@ -35,8 +35,8 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="4dp"
-        android:layout_marginEnd="4dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
         app:fabSize="mini"
         app:useCompatPadding="true"/>
 

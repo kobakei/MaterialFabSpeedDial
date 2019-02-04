@@ -58,6 +58,7 @@
         <!-- Spacing between mini FAB elements -->
         <attr name="fab_miniFabSpacing" format="dimension"/>
 
+        <attr name="fab_touchGuardId" format="integer"/>
 
     </declare-styleable>
 </resources>
