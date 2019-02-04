@@ -1,13 +1,15 @@
 package io.github.kobakei.materialfabspeeddial
 
 import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.ShapeDrawable
+import android.graphics.drawable.shapes.RectShape
 import android.os.Build
-import android.os.Handler
 import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.*
@@ -17,10 +19,12 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
+import androidx.annotation.Dimension
 import androidx.annotation.MenuRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
+import androidx.core.widget.TextViewCompat
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 
@@ -50,7 +54,9 @@ class FabSpeedDial : FrameLayout, CoordinatorLayout.AttachedBehavior {
         private set
     private lateinit var fabsContainer: LinearLayout
     private lateinit var menuContainer: LinearLayout
-    private lateinit var touchGuard: View
+    private var touchGuard: View? = null
+    private var touchGuardFadeAnimation: ViewPropertyAnimator? = null
+    private var touchGuardRevealAnimation: Animator? = null
 
     private val menuClickListeners = mutableListOf<OnMenuItemClick>()
     private val stateChangeListeners = mutableListOf<OnStateChange>()
@@ -67,10 +73,13 @@ class FabSpeedDial : FrameLayout, CoordinatorLayout.AttachedBehavior {
     private var miniFabTextColorList: MutableList<ColorStateList>? = null
     private var miniFabTextBackground: Drawable? = null
     private var miniFabTextBackgroundList: MutableList<Drawable>? = null
+    private var miniFabLabelTextAppearance: Int = 0
+    private var miniFabLabelElevation: Int = 0
 
     private var fabRotationAngle = 45.0f
 
     private var extraMarginPixel = 0
+    private var useCompatPadding = false
 
     /**
      * Check whether menu is opened or closes
@@ -79,10 +88,19 @@ class FabSpeedDial : FrameLayout, CoordinatorLayout.AttachedBehavior {
     var isOpeningMenu = false
         private set
     private var useTouchGuard = true
+    private var touchGuardViewId: Int = View.NO_ID
+    private var touchGuardColor: Int = 0
     private var useRevealEffect = true
     private var useRippleOnPreLollipop = true
 
     private var isLandscapeLayout = false
+
+    @Dimension
+    var miniFabSpacing: Int = 0
+        set(value) {
+            field = value
+            applyMiniFabSpacing(value)
+        }
 
     constructor(context: Context) : super(context) {
         initLayout(context, null, 0)
@@ -94,6 +112,27 @@ class FabSpeedDial : FrameLayout, CoordinatorLayout.AttachedBehavior {
 
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         initLayout(context, attrs, defStyleAttr)
+    }
+
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        touchGuard = rootView.findViewById(touchGuardViewId)
+        touchGuard!!.setOnClickListener { closeMenu() }
+        touchGuard!!.setBackgroundColor(touchGuardColor)
+        if (useTouchGuard) {
+            if (isOpeningMenu){
+                showTouchGuard(false)
+            } else {
+                hideTouchGuard(false)
+            }
+        }
+    }
+
+    override fun onDetachedFromWindow() {
+        hideTouchGuard(false)
+        touchGuard = null
+        super.onDetachedFromWindow()
     }
 
     override fun onSaveInstanceState(): Parcelable? {
@@ -124,14 +163,11 @@ class FabSpeedDial : FrameLayout, CoordinatorLayout.AttachedBehavior {
         isLandscapeLayout = canShowHorizontally && context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
         val inflater = LayoutInflater.from(context)
-        val view = if (isLandscapeLayout) {
-            inflater.inflate(R.layout.fab_speed_dial_land, this, false)
+        if (isLandscapeLayout) {
+            inflater.inflate(R.layout.fab_speed_dial_land, this, true)
         } else {
-            inflater.inflate(R.layout.fab_speed_dial, this, false)
+            inflater.inflate(R.layout.fab_speed_dial, this, true)
         }
-        val params = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-        params.gravity = Gravity.BOTTOM or Gravity.END
-        addView(view, params)
 
         mainFab = findViewById(R.id.fab_main)
         mainFab.setOnClickListener {
@@ -144,9 +180,6 @@ class FabSpeedDial : FrameLayout, CoordinatorLayout.AttachedBehavior {
 
         fabsContainer = findViewById(R.id.fabs_container)
         menuContainer = findViewById(R.id.menu_container)
-
-        touchGuard = findViewById(R.id.touch_guard)
-        touchGuard.setOnClickListener { closeMenu() }
 
         // Key listener to handle BACK key
         isFocusable = true
@@ -163,6 +196,8 @@ class FabSpeedDial : FrameLayout, CoordinatorLayout.AttachedBehavior {
         })
 
         // Read attrs
+        useCompatPadding = ta.getBoolean(R.styleable.FabSpeedDial_fab_useCompatPadding, true)
+        mainFab.useCompatPadding = useCompatPadding
 
         // Extra margin
         extraMarginPixel = ta.getDimensionPixelSize(R.styleable.FabSpeedDial_fab_extraMargin, 0)
@@ -202,6 +237,7 @@ class FabSpeedDial : FrameLayout, CoordinatorLayout.AttachedBehavior {
 
         fabRotationAngle = ta.getFloat(R.styleable.FabSpeedDial_fab_fabRotationAngle, 45.0f)
 
+        miniFabSpacing = ta.getDimensionPixelSize(R.styleable.FabSpeedDial_fab_miniFabSpacing, 0)
 
         // Mini FAB
         miniFabBackgroundColor = ta.getColorStateList(R.styleable.FabSpeedDial_fab_miniFabBackgroundColor)
@@ -245,6 +281,9 @@ class FabSpeedDial : FrameLayout, CoordinatorLayout.AttachedBehavior {
         }
 
         // Mini FAB text
+        miniFabLabelTextAppearance = ta.getResourceId(R.styleable.FabSpeedDial_fab_miniFabLabelTextAppearance, -1)
+        miniFabLabelElevation = ta.getDimensionPixelSize(R.styleable.FabSpeedDial_fab_miniFabLabelElevation, 0)
+
         miniFabTextColor = ta.getColorStateList(R.styleable.FabSpeedDial_fab_miniFabTextColor)
         val miniFabTextColorListId = ta.getResourceId(R.styleable.FabSpeedDial_fab_miniFabTextColorList, 0)
         if (miniFabTextColorListId != 0) {
@@ -276,9 +315,8 @@ class FabSpeedDial : FrameLayout, CoordinatorLayout.AttachedBehavior {
         // Touch guard
         useTouchGuard = ta.getBoolean(R.styleable.FabSpeedDial_fab_useTouchGuard, true)
         useRevealEffect = ta.getBoolean(R.styleable.FabSpeedDial_fab_useRevealEffect, true)
-
-        val touchGuardColor = ta.getColor(R.styleable.FabSpeedDial_fab_touchGuardColor, Color.argb(128, 0, 0, 0))
-        touchGuard.setBackgroundColor(touchGuardColor)
+        touchGuardViewId = ta.getResourceId(R.styleable.FabSpeedDial_fab_touchGuardId, R.id.touch_guard)
+        touchGuardColor = ta.getColor(R.styleable.FabSpeedDial_fab_touchGuardColor, Color.argb(128, 0, 0, 0))
 
         // Menu
         menu = FabSpeedDialMenu(context)
@@ -290,6 +328,8 @@ class FabSpeedDial : FrameLayout, CoordinatorLayout.AttachedBehavior {
         refreshMenus()
 
         ta.recycle()
+        clipChildren = false
+        clipToPadding = false
     }
 
     private fun refreshMenus() {
@@ -352,12 +392,17 @@ class FabSpeedDial : FrameLayout, CoordinatorLayout.AttachedBehavior {
         val params = miniFab.layoutParams as ViewGroup.MarginLayoutParams
         params.setMargins(params.leftMargin, params.topMargin + extraMarginPixel, params.rightMargin, params.bottomMargin + extraMarginPixel)
         miniFab.layoutParams = params
+        miniFab.useCompatPadding = useCompatPadding
 
         // TextView
         val label = itemView.findViewById<TextView>(R.id.text)
         if (label != null) {
             label.text = menuItem.title
             label.isEnabled = menuItem.isEnabled
+            if (miniFabLabelTextAppearance != -1) {
+                TextViewCompat.setTextAppearance(label, miniFabLabelTextAppearance)
+            }
+            ViewCompat.setElevation(label, miniFabLabelElevation.toFloat())
 
             if (miniFabTextColor != null) {
                 label.setTextColor(miniFabTextColor)
@@ -397,6 +442,25 @@ class FabSpeedDial : FrameLayout, CoordinatorLayout.AttachedBehavior {
 
     private fun shouldUseRipple(): Boolean =
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP || useRippleOnPreLollipop
+
+    private fun applyMiniFabSpacing(@Dimension sizePixels: Int) {
+        if (sizePixels > 0) {
+            val drawable = ShapeDrawable(RectShape())
+            if (isLandscapeLayout) {
+                drawable.intrinsicWidth = sizePixels
+                drawable.intrinsicHeight = 1
+            } else {
+                drawable.intrinsicWidth = 1
+                drawable.intrinsicHeight = sizePixels
+            }
+            drawable.paint.color = Color.TRANSPARENT
+            menuContainer.dividerDrawable = drawable
+            menuContainer.showDividers = LinearLayout.SHOW_DIVIDER_MIDDLE or LinearLayout.SHOW_DIVIDER_END
+        } else {
+            menuContainer.dividerDrawable = null
+            menuContainer.showDividers = LinearLayout.SHOW_DIVIDER_NONE
+        }
+    }
 
     /**
      * Inflate menu items from menu resource.
@@ -451,19 +515,7 @@ class FabSpeedDial : FrameLayout, CoordinatorLayout.AttachedBehavior {
 
         menuContainer.visibility = View.VISIBLE
         if (useTouchGuard) {
-            touchGuard.visibility = View.VISIBLE
-            if (useRevealEffect) {
-                touchGuard.alpha = 0.0f
-                Handler().post {
-                    touchGuard.alpha = 1.0f
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        val cx = fabsContainer.left + (mainFab.left + mainFab.right) / 2
-                        val cy = fabsContainer.top + (mainFab.top + mainFab.bottom) / 2
-                        val radius = Math.max(touchGuard.width, touchGuard.height) * 2.0f
-                        ViewAnimationUtils.createCircularReveal(touchGuard, cx, cy, 0f, radius).start()
-                    }
-                }
-            }
+            showTouchGuard()
         }
         isOpeningMenu = true
         for (listener in stateChangeListeners) {
@@ -510,35 +562,82 @@ class FabSpeedDial : FrameLayout, CoordinatorLayout.AttachedBehavior {
         }
 
         if (useTouchGuard) {
-            touchGuard.animate()
-                    .alpha(0.0f)
-                    .setDuration(MINI_FAB_DISMISS_DURATION)
-                    .setListener(object : Animator.AnimatorListener {
-                        override fun onAnimationStart(animation: Animator) {
-
-                        }
-
-                        override fun onAnimationEnd(animation: Animator) {
-                            touchGuard.alpha = 1.0f
-                            touchGuard.visibility = View.GONE
-                            touchGuard.animate().setListener(null).start()
-                        }
-
-                        override fun onAnimationCancel(animation: Animator) {
-
-                        }
-
-                        override fun onAnimationRepeat(animation: Animator) {
-
-                        }
-                    })
-                    .start()
+            hideTouchGuard()
         }
 
         isOpeningMenu = false
         for (listener in stateChangeListeners) {
             listener.invoke(isOpeningMenu)
         }
+    }
+
+    private fun hideTouchGuard(animate: Boolean = true) {
+        cancelTouchGuardAnimation()
+        val touchGuardView = touchGuard
+        if (touchGuardView != null) {
+            if (animate) {
+                touchGuardFadeAnimation = touchGuardView.animate()
+                        .alpha(0.0f)
+                        .setDuration(MINI_FAB_DISMISS_DURATION)
+                        .setListener(object : AnimatorListenerAdapter() {
+                            override fun onAnimationEnd(animation: Animator) {
+                                touchGuardView.alpha = 1.0f
+                                touchGuardView.visibility = View.GONE
+                                touchGuardView.animate().setListener(null).start()
+                            }
+                        })
+                touchGuardFadeAnimation!!.start()
+            } else {
+                touchGuardView.alpha = .0f
+                touchGuardView.visibility = View.INVISIBLE
+            }
+        }
+    }
+
+    private fun showTouchGuard(animate: Boolean = true) {
+        cancelTouchGuardAnimation()
+        val touchGuardView = touchGuard
+        if (touchGuardView != null) {
+            if (animate) {
+                if (useRevealEffect && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    touchGuardView.visibility = View.VISIBLE
+                    touchGuardView.doWhenLaidOut(Runnable {
+                        val touchGuardLocation = intArrayOf(0, 0)
+                        touchGuardView.getLocationInWindow(touchGuardLocation)
+                        val fabLocation = intArrayOf(0, 0)
+                        mainFab.getLocationInWindow(fabLocation)
+                        val fabOffsetX = Math.abs(fabLocation[0] - touchGuardLocation[0])
+                        val fabOffsetY = Math.abs(fabLocation[1] - touchGuardLocation[1])
+                        val cx = fabOffsetX + (mainFab.left + mainFab.right) / 2
+                        val cy = fabOffsetY + (mainFab.top + mainFab.bottom) / 2
+                        val radius = Math.max(touchGuardView.width, touchGuardView.height) * 2.0f
+                        touchGuardRevealAnimation = ViewAnimationUtils
+                                .createCircularReveal(touchGuardView, cx, cy, 0f, radius)
+                        touchGuardRevealAnimation!!.addListener(object : AnimatorListenerAdapter() {
+                            override fun onAnimationStart(animation: Animator?) {
+                                touchGuardView.alpha = 1.0f
+                            }
+                        })
+                        touchGuardRevealAnimation!!.start()
+                    })
+                } else {
+                    touchGuardView.alpha = 0.0f
+                    touchGuardFadeAnimation = touchGuardView.animate()
+                            .alpha(1.0f)
+                            .setDuration(MINI_FAB_DISMISS_DURATION)
+                    touchGuardFadeAnimation!!.start()
+                }
+            } else {
+                touchGuardView.alpha = 1.0f
+            }
+        }
+    }
+
+    private fun cancelTouchGuardAnimation() {
+        touchGuardRevealAnimation?.cancel()
+        touchGuardRevealAnimation = null
+        touchGuardFadeAnimation?.cancel()
+        touchGuardFadeAnimation = null
     }
 
     /**
@@ -666,6 +765,28 @@ class FabSpeedDial : FrameLayout, CoordinatorLayout.AttachedBehavior {
     private class SavedState(source: Parcelable?) : View.BaseSavedState(source) {
 
         internal var isOpened = false
+    }
+
+    private infix fun View.doWhenLaidOut(runnable: Runnable) {
+        if (ViewCompat.isLaidOut(this)) {
+            runnable.run()
+        } else {
+            val view = this
+            this.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    try {
+                        runnable.run()
+                    } finally {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            view.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                        } else {
+                            @Suppress("DEPRECATION")
+                            view.viewTreeObserver.removeGlobalOnLayoutListener(this)
+                        }
+                    }
+                }
+            })
+        }
     }
 
     companion object {

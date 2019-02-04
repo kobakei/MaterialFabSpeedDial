@@ -16,6 +16,7 @@
         android:id="@+id/fab"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="16dp"
 
         app:fab_menu="@menu/fab_vector"
 
@@ -36,9 +37,11 @@
         app:fab_miniFabTextColorList="@array/black_array"
         app:fab_miniFabTextBackground="@drawable/label"
         app:fab_miniFabTextBackgroundList="@array/labels"
-
-        app:fab_extraMargin="-8dp"
-
+        app:fab_miniFabLabelTextAppearance="@style/TextAppearance.MaterialComponents.Body2"
+        app:fab_miniFabLabelElevation="1dp"
+        app:fab_miniFabSpacing="16dp"
+        app:fab_useCompatPadding="false"
+        app:fab_extraMargin="0dp"
         app:fab_useTouchGuard="false"
         app:fab_touchGuardColor="#80000000"
         app:fab_useRevealEffect="true"/>
